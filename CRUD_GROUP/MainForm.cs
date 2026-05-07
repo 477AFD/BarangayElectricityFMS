@@ -1,10 +1,13 @@
-﻿using System;
+﻿using GraphingTests;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +22,7 @@ namespace CRUD_GROUP
         readonly bool admin = false;
         KeyValuePair<string, string> account;
         readonly DatabaseWorker db;
+        GraphWorker graph;
         public MainForm(KeyValuePair<string, string> accountName)
         {
             InitializeComponent();
@@ -57,15 +61,30 @@ namespace CRUD_GROUP
                     } else
                     {
                         UserLabel.Text = $"User: {account.Key}";
+                        //CreateGraph();
                     }
                     Debug.WriteLine("Fill Search Operations");
                     FillSearch();
+                    Draw();
                 }
                 catch (Exception ex)
                 {
                     if (ex is AccessViolationException) throw;
                     else throw new Exception($"[Exception] SEEKER DETECTED:\n\n{ex}");
                 }
+        }
+        GraphWorker p;
+        public void Draw()
+        {
+            if (!admin)
+            {
+                string name = GetName();
+                string sql = $"SELECT RatePerKWH, Price FROM RecordTable WHERE CustomerName = '{name}'";
+                DataTable spill = db.ExecuteQuery(sql);
+                p = GraphWorker.MakeGraphWorker(spill);
+                p.DrawLineExt(picGraph, 1, Color.Blue, null, 1, 250);
+                p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, null, 1, 1);
+            }
         }
 
         public void DisplayData()
@@ -140,10 +159,10 @@ namespace CRUD_GROUP
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-
-
-
+            if (MainControl.SelectedIndex == 1) {
+                Draw();
+            }
+            
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -154,6 +173,10 @@ namespace CRUD_GROUP
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
+            if (index < 0 || index >= dgvRecords.Rows.Count)
+            {
+                return;
+            }
             DataGridViewRow selectedRows = dgvRecords.Rows[index];
             txtID.Text = selectedRows.Cells[0].Value.ToString();
             txtName.Text = selectedRows.Cells[1].Value.ToString();
@@ -193,7 +216,7 @@ namespace CRUD_GROUP
                 txtID.Visible = false;
                 lblID.Visible = false;
                 btnUpdate.Text = "Cancel";
-                btnSave.Text = "Save...";
+                btnSave.Text = "New Record";
                 SearchComboBox.Enabled = false;
                 SearchComboBox.Visible = false;
                 searchToolStripMenuItem.Enabled = false;
@@ -204,11 +227,16 @@ namespace CRUD_GROUP
                 txtName.Enabled = false;
                 CancelAddButton.Enabled = false;
                 CancelAddButton.Visible = false;
+                dgvRecords.Columns[7].Visible = false;
+                dgvRecords.Columns[1].Visible = false;
+                btnDelete.Enabled = false;
+                btnDelete.Visible = false;
             } else
             {
                 MainControl.TabPages.Remove(Tab2);
                 graphToolStripMenuItem.Enabled = false;
                 graphToolStripMenuItem.Visible = false;
+                dgvRecords.Columns[0].Visible = true;
             }
 
         }
@@ -238,10 +266,10 @@ namespace CRUD_GROUP
         private void button3_Click(object sender, EventArgs e)
         {
             string x = (admin) ? txtName.Text : account.Key;
-            double pricePerKwh = double.Parse(txtRate.Text);
-            double a = double.Parse(txtPrev.Text);
-            double b = double.Parse(txtCurrent.Text);
-            double price = (b - a) * pricePerKwh;
+            decimal pricePerKwh = decimal.Parse(txtRate.Text);
+            decimal a = decimal.Parse(txtPrev.Text);
+            decimal b = decimal.Parse(txtCurrent.Text);
+            decimal price = (b - a) * pricePerKwh;
             int r = PaidCheckBox.Checked ? 1 : 0;
             int id = GetLastID();
             string sql = "Insert into RecordTable Values (" + id +
@@ -283,10 +311,10 @@ namespace CRUD_GROUP
             if (admin)
             {
 
-                double pricePerKwh = double.Parse(txtRate.Text);
-                double a = double.Parse(txtPrev.Text);
-                double b = double.Parse(txtCurrent.Text);
-                double price = (b - a) * pricePerKwh;
+                decimal pricePerKwh = decimal.Parse(txtRate.Text);
+                decimal a = decimal.Parse(txtPrev.Text);
+                decimal b = decimal.Parse(txtCurrent.Text);
+                decimal price = (b - a) * pricePerKwh;
                 int r = (PaidCheckBox.Checked ? 1 : 0);
                 string sql = "Update RecordTable set CustomerName='" + txtName.Text +
                     "',PreviousKWH=" + a +
@@ -436,6 +464,115 @@ namespace CRUD_GROUP
         private void PrintButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Draw();
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == 0x0112) // WM_SYSCOMMAND
+            {
+                int wparam = m.WParam.ToInt32() & 0xfff0;
+
+                switch (wparam)
+                {
+                    case 0xF030: // Maximize
+                        Console.WriteLine("[GUI] Window maximized");
+                        //Program.d.DrawLine(f, new Point(f.Width, f.Height));
+                        if (!admin) 
+                        {
+                            p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
+                            p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraph.Width, picGraph.Height), 1, 1);
+                        }
+                        
+                        break;
+                    case 0xF120: // Restore
+                        Console.WriteLine("[GUI] Window restored");
+                        //Program.d.DrawLine(f, new Point(f.Width, f.Height));
+                        if (!admin)
+                        {
+                            p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
+                            p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraph.Width, picGraph.Height), 1, 1);
+                        }
+                        break;
+                    case 0xF010: // Drag
+                        Console.WriteLine("[GUI] Window dragged");
+                        //Program.d.DrawLine(f, new Point(f.Width, f.Height));
+                        if (!admin)
+                        {
+                            p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
+                            p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraph.Width, picGraph.Height), 1, 1);
+                        }
+                        break;
+                    case 0xF060: // Close
+                        Console.WriteLine("[GUI] Window closed");
+                        break;
+                    case 0xF020: // Minimize
+                        Console.WriteLine("[GUI] Window minimized");
+                        break;
+                    case 0xF000: // Resize
+                        Console.WriteLine("[GUI] Window resized");
+                        //Program.d.DrawLine(f, new Point(f.Width, f.Height));
+                        if (!admin)
+                        {
+                            p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
+                            p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraph.Width, picGraph.Height), 1, 1);
+                        }
+                        break;
+                    case 0xF100: // Alt key
+                        Console.WriteLine("[GUI] Alt key pressed");
+                        break;
+                    case 0xF170: // Sleep mode detected
+                        Console.WriteLine("[GUI] System went to sleep mode");
+                        break;
+                    default:     // Seeker
+                        Console.WriteLine($"[GUI] 0x{wparam:X4} is unknown!");
+                        MessageBox.Show($"Sorry, a seeker has been detected.\n\n{wparam:X4} is not a valid WM_COMMAND message.\n\nCheck the code for errors!", "Guru meditation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                }
+            }
+            else if (m.Msg == 0x0219)
+            {
+                switch ((int)m.WParam)
+                {
+                    case 0x8004:
+                        // Device removed
+                        Console.WriteLine("[GUI] A device has been disconnected.");
+                        int devType = Marshal.ReadInt32(m.LParam, 4);
+                        if (devType == 0x00000002) // DBT_DEVTYP_VOLUME
+                        {
+                            // Refresh volume list
+                            Console.WriteLine("[SYSTEM] Storage lost connection, refreshing disk list...");
+                            //RefreshDisk(true);
+                        }
+                        break;
+                    case 0x8000:
+                        // Device inserted
+                        Console.WriteLine("[GUI] A device has been connected.");
+                        DEV_BROADCAST_VOLUME vol = Marshal.PtrToStructure<DEV_BROADCAST_VOLUME>(m.LParam);
+                        if (vol.dbcv_devicetype == 0x00000002)
+                        {
+                            // vol.dbcv_unitmask for drive letter
+                            //string driveLetter = DriveMaskToLetter(vol.dbcv_unitmask);
+                            //MessageBox.Show($"Drive {driveLetter} has been inserted.");
+                            Console.WriteLine("[SYSTEM] Storage connection detected. Refreshing disk list...");
+                            //RefreshDisk(false);
+                        }
+                        break;
+                }
+            }
+            //Console.WriteLine($"[SYSTEM] Performing Win32 message {m.WParam}...");
+        }
+        public struct DEV_BROADCAST_VOLUME
+        {
+            public int dbcv_size;
+            public int dbcv_devicetype;
+            public int dbcv_reserved;
+            public int dbcv_unitmask;
         }
     }
 }

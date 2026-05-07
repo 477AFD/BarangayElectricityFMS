@@ -39,6 +39,7 @@ namespace CRUD_GROUP
             RichString header = new RichString("Electricity Record", "Arial", 16, FontStyle.Bold);
             RichString line1 = new RichString($"Name of customer: {n}", "Arial");
             e.Graphics.DrawString(header.Text, header.Font, Brushes.Black, 100, 100);
+
         }
     }
 

@@ -34,9 +34,17 @@ namespace CRUD_GROUP
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.MainControl = new System.Windows.Forms.TabControl();
             this.Tab1 = new System.Windows.Forms.TabPage();
             this.chkUnpaid = new System.Windows.Forms.CheckBox();
@@ -59,14 +67,6 @@ namespace CRUD_GROUP
             this.btnSave = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.dgvRecords = new System.Windows.Forms.DataGridView();
-            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.customerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.previousKWHDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.currentKWHDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ratePerKWHDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.receiptNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Paid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.recordTableBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.recordsDataSet1 = new CRUD_GROUP.RecordsDataSet1();
             this.AddButton = new System.Windows.Forms.Button();
@@ -94,6 +94,19 @@ namespace CRUD_GROUP
             this.UserLabel = new System.Windows.Forms.Label();
             this.recordTableTableAdapter = new CRUD_GROUP.RecordsDataSetTableAdapters.RecordTableTableAdapter();
             this.recordTableTableAdapter1 = new CRUD_GROUP.RecordsDataSet1TableAdapters.RecordTableTableAdapter();
+            this.GraphTabControl = new System.Windows.Forms.TabControl();
+            this.PriceTrendPerKWH = new System.Windows.Forms.TabPage();
+            this.RateTrend = new System.Windows.Forms.TabPage();
+            this.picGraphPricePerKwh = new System.Windows.Forms.PictureBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.customerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.previousKWHDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.currentKWHDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ratePerKWHDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.receiptNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Paid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MainControl.SuspendLayout();
             this.Tab1.SuspendLayout();
             this.FieldsPanel.SuspendLayout();
@@ -105,6 +118,11 @@ namespace CRUD_GROUP
             ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet)).BeginInit();
             this.strMain.SuspendLayout();
+            this.GraphTabControl.SuspendLayout();
+            this.PriceTrendPerKWH.SuspendLayout();
+            this.RateTrend.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picGraphPricePerKwh)).BeginInit();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainControl
@@ -197,18 +215,20 @@ namespace CRUD_GROUP
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDelete.Location = new System.Drawing.Point(264, 278);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(128, 36);
             this.btnDelete.TabIndex = 21;
-            this.btnDelete.Text = "Delete...";
+            this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // CancelAddButton
             // 
             this.CancelAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CancelAddButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.CancelAddButton.Location = new System.Drawing.Point(844, 278);
             this.CancelAddButton.Margin = new System.Windows.Forms.Padding(2);
             this.CancelAddButton.Name = "CancelAddButton";
@@ -349,24 +369,26 @@ namespace CRUD_GROUP
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSave.Location = new System.Drawing.Point(4, 278);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(124, 36);
             this.btnSave.TabIndex = 3;
-            this.btnSave.Text = "Save/New Record...";
+            this.btnSave.Text = "Save/New Record";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.button3_Click);
             // 
             // btnUpdate
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnUpdate.Location = new System.Drawing.Point(132, 278);
             this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(128, 36);
             this.btnUpdate.TabIndex = 4;
-            this.btnUpdate.Text = "Update...";
+            this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
@@ -376,14 +398,14 @@ namespace CRUD_GROUP
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvRecords.AutoGenerateColumns = false;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecords.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecords.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvRecords.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRecords.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.iDDataGridViewTextBoxColumn,
@@ -395,103 +417,33 @@ namespace CRUD_GROUP
             this.receiptNoDataGridViewTextBoxColumn,
             this.Paid});
             this.dgvRecords.DataSource = this.recordTableBindingSource1;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvRecords.Location = new System.Drawing.Point(274, 5);
             this.dgvRecords.Margin = new System.Windows.Forms.Padding(2);
             this.dgvRecords.MultiSelect = false;
             this.dgvRecords.Name = "dgvRecords";
             this.dgvRecords.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecords.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecords.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dgvRecords.RowHeadersWidth = 51;
             this.dgvRecords.RowTemplate.Height = 24;
             this.dgvRecords.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvRecords.Size = new System.Drawing.Size(676, 318);
             this.dgvRecords.TabIndex = 0;
             this.dgvRecords.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // iDDataGridViewTextBoxColumn
-            // 
-            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
-            this.iDDataGridViewTextBoxColumn.ReadOnly = true;
-            this.iDDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // customerNameDataGridViewTextBoxColumn
-            // 
-            this.customerNameDataGridViewTextBoxColumn.DataPropertyName = "CustomerName";
-            this.customerNameDataGridViewTextBoxColumn.HeaderText = "CustomerName";
-            this.customerNameDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.customerNameDataGridViewTextBoxColumn.Name = "customerNameDataGridViewTextBoxColumn";
-            this.customerNameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.customerNameDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // previousKWHDataGridViewTextBoxColumn
-            // 
-            this.previousKWHDataGridViewTextBoxColumn.DataPropertyName = "PreviousKWH";
-            this.previousKWHDataGridViewTextBoxColumn.HeaderText = "PreviousKWH";
-            this.previousKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.previousKWHDataGridViewTextBoxColumn.Name = "previousKWHDataGridViewTextBoxColumn";
-            this.previousKWHDataGridViewTextBoxColumn.ReadOnly = true;
-            this.previousKWHDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // currentKWHDataGridViewTextBoxColumn
-            // 
-            this.currentKWHDataGridViewTextBoxColumn.DataPropertyName = "CurrentKWH";
-            this.currentKWHDataGridViewTextBoxColumn.HeaderText = "CurrentKWH";
-            this.currentKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.currentKWHDataGridViewTextBoxColumn.Name = "currentKWHDataGridViewTextBoxColumn";
-            this.currentKWHDataGridViewTextBoxColumn.ReadOnly = true;
-            this.currentKWHDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // ratePerKWHDataGridViewTextBoxColumn
-            // 
-            this.ratePerKWHDataGridViewTextBoxColumn.DataPropertyName = "RatePerKWH";
-            this.ratePerKWHDataGridViewTextBoxColumn.HeaderText = "RatePerKWH";
-            this.ratePerKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.ratePerKWHDataGridViewTextBoxColumn.Name = "ratePerKWHDataGridViewTextBoxColumn";
-            this.ratePerKWHDataGridViewTextBoxColumn.ReadOnly = true;
-            this.ratePerKWHDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // priceDataGridViewTextBoxColumn
-            // 
-            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
-            this.priceDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            this.priceDataGridViewTextBoxColumn.ReadOnly = true;
-            this.priceDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // receiptNoDataGridViewTextBoxColumn
-            // 
-            this.receiptNoDataGridViewTextBoxColumn.DataPropertyName = "ReceiptNo";
-            this.receiptNoDataGridViewTextBoxColumn.HeaderText = "ReceiptNo";
-            this.receiptNoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.receiptNoDataGridViewTextBoxColumn.Name = "receiptNoDataGridViewTextBoxColumn";
-            this.receiptNoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.receiptNoDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // Paid
-            // 
-            this.Paid.DataPropertyName = "Paid";
-            this.Paid.HeaderText = "Paid";
-            this.Paid.Name = "Paid";
-            this.Paid.ReadOnly = true;
             // 
             // recordTableBindingSource1
             // 
@@ -516,10 +468,10 @@ namespace CRUD_GROUP
             // 
             // Tab2
             // 
+            this.Tab2.Controls.Add(this.GraphTabControl);
             this.Tab2.Controls.Add(this.PrintButton);
             this.Tab2.Controls.Add(this.SaveCSVRecord);
             this.Tab2.Controls.Add(this.SavePNGButton);
-            this.Tab2.Controls.Add(this.picGraph);
             this.Tab2.Location = new System.Drawing.Point(4, 22);
             this.Tab2.Margin = new System.Windows.Forms.Padding(2);
             this.Tab2.Name = "Tab2";
@@ -532,6 +484,7 @@ namespace CRUD_GROUP
             // PrintButton
             // 
             this.PrintButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PrintButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PrintButton.Location = new System.Drawing.Point(162, 232);
             this.PrintButton.Margin = new System.Windows.Forms.Padding(2);
             this.PrintButton.Name = "PrintButton";
@@ -544,6 +497,7 @@ namespace CRUD_GROUP
             // SaveCSVRecord
             // 
             this.SaveCSVRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SaveCSVRecord.Cursor = System.Windows.Forms.Cursors.Hand;
             this.SaveCSVRecord.Location = new System.Drawing.Point(14, 270);
             this.SaveCSVRecord.Margin = new System.Windows.Forms.Padding(2);
             this.SaveCSVRecord.Name = "SaveCSVRecord";
@@ -555,6 +509,7 @@ namespace CRUD_GROUP
             // SavePNGButton
             // 
             this.SavePNGButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SavePNGButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.SavePNGButton.Location = new System.Drawing.Point(14, 232);
             this.SavePNGButton.Margin = new System.Windows.Forms.Padding(2);
             this.SavePNGButton.Name = "SavePNGButton";
@@ -569,10 +524,13 @@ namespace CRUD_GROUP
             this.picGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.picGraph.Location = new System.Drawing.Point(4, 5);
+            this.picGraph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picGraph.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.picGraph.Location = new System.Drawing.Point(5, 5);
             this.picGraph.Margin = new System.Windows.Forms.Padding(2);
             this.picGraph.Name = "picGraph";
-            this.picGraph.Size = new System.Drawing.Size(946, 212);
+            this.picGraph.Size = new System.Drawing.Size(928, 186);
+            this.picGraph.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picGraph.TabIndex = 0;
             this.picGraph.TabStop = false;
             // 
@@ -588,7 +546,7 @@ namespace CRUD_GROUP
             // 
             // strMain
             // 
-            this.strMain.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.strMain.BackColor = System.Drawing.Color.SkyBlue;
             this.strMain.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.strMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -621,7 +579,7 @@ namespace CRUD_GROUP
             this.changeAccountToolStripMenuItem,
             this.logOutToolStripMenuItem});
             this.accountInformationToolStripMenuItem.Name = "accountInformationToolStripMenuItem";
-            this.accountInformationToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.accountInformationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.accountInformationToolStripMenuItem.Text = "Account";
             // 
             // infoToolStripMenuItem
@@ -651,12 +609,12 @@ namespace CRUD_GROUP
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(135, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // exitAltF4ToolStripMenuItem
             // 
             this.exitAltF4ToolStripMenuItem.Name = "exitAltF4ToolStripMenuItem";
-            this.exitAltF4ToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.exitAltF4ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitAltF4ToolStripMenuItem.Text = "Exit (Alt+F4)";
             // 
             // graphToolStripMenuItem
@@ -671,18 +629,19 @@ namespace CRUD_GROUP
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAsToolStripMenuItem.Text = "Save as...";
             // 
             // SearchComboBox
             // 
-            this.SearchComboBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.SearchComboBox.BackColor = System.Drawing.Color.SkyBlue;
             this.SearchComboBox.Items.AddRange(new object[] {
             "All"});
             this.SearchComboBox.Name = "SearchComboBox";
@@ -700,14 +659,16 @@ namespace CRUD_GROUP
             // 
             this.UserLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.UserLabel.AutoSize = true;
-            this.UserLabel.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.UserLabel.Location = new System.Drawing.Point(886, 7);
+            this.UserLabel.BackColor = System.Drawing.Color.SkyBlue;
+            this.UserLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UserLabel.Location = new System.Drawing.Point(556, 0);
             this.UserLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.UserLabel.Name = "UserLabel";
-            this.UserLabel.Size = new System.Drawing.Size(88, 13);
+            this.UserLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.UserLabel.Size = new System.Drawing.Size(100, 15);
             this.UserLabel.TabIndex = 3;
             this.UserLabel.Text = "admin@localhost";
-            this.UserLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.UserLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // recordTableTableAdapter
             // 
@@ -717,17 +678,169 @@ namespace CRUD_GROUP
             // 
             this.recordTableTableAdapter1.ClearBeforeFill = true;
             // 
+            // GraphTabControl
+            // 
+            this.GraphTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GraphTabControl.Controls.Add(this.PriceTrendPerKWH);
+            this.GraphTabControl.Controls.Add(this.RateTrend);
+            this.GraphTabControl.Location = new System.Drawing.Point(5, 5);
+            this.GraphTabControl.Name = "GraphTabControl";
+            this.GraphTabControl.SelectedIndex = 0;
+            this.GraphTabControl.Size = new System.Drawing.Size(946, 222);
+            this.GraphTabControl.TabIndex = 4;
+            // 
+            // PriceTrendPerKWH
+            // 
+            this.PriceTrendPerKWH.Controls.Add(this.picGraph);
+            this.PriceTrendPerKWH.Location = new System.Drawing.Point(4, 22);
+            this.PriceTrendPerKWH.Name = "PriceTrendPerKWH";
+            this.PriceTrendPerKWH.Padding = new System.Windows.Forms.Padding(3);
+            this.PriceTrendPerKWH.Size = new System.Drawing.Size(938, 196);
+            this.PriceTrendPerKWH.TabIndex = 0;
+            this.PriceTrendPerKWH.Text = "Price";
+            this.PriceTrendPerKWH.UseVisualStyleBackColor = true;
+            // 
+            // RateTrend
+            // 
+            this.RateTrend.Controls.Add(this.picGraphPricePerKwh);
+            this.RateTrend.Location = new System.Drawing.Point(4, 22);
+            this.RateTrend.Name = "RateTrend";
+            this.RateTrend.Padding = new System.Windows.Forms.Padding(3);
+            this.RateTrend.Size = new System.Drawing.Size(938, 196);
+            this.RateTrend.TabIndex = 1;
+            this.RateTrend.Text = "Rate/kWh";
+            this.RateTrend.UseVisualStyleBackColor = true;
+            // 
+            // picGraphPricePerKwh
+            // 
+            this.picGraphPricePerKwh.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.picGraphPricePerKwh.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picGraphPricePerKwh.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.picGraphPricePerKwh.Location = new System.Drawing.Point(5, 5);
+            this.picGraphPricePerKwh.Margin = new System.Windows.Forms.Padding(2);
+            this.picGraphPricePerKwh.Name = "picGraphPricePerKwh";
+            this.picGraphPricePerKwh.Size = new System.Drawing.Size(928, 186);
+            this.picGraphPricePerKwh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picGraphPricePerKwh.TabIndex = 1;
+            this.picGraphPricePerKwh.TabStop = false;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.SkyBlue;
+            this.flowLayoutPanel1.Controls.Add(this.UserLabel);
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(313, 4);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(658, 14);
+            this.flowLayoutPanel1.TabIndex = 4;
+            // 
+            // iDDataGridViewTextBoxColumn
+            // 
+            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
+            dataGridViewCellStyle2.NullValue = "+";
+            this.iDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
+            this.iDDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
+            this.iDDataGridViewTextBoxColumn.ReadOnly = true;
+            this.iDDataGridViewTextBoxColumn.Visible = false;
+            this.iDDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // customerNameDataGridViewTextBoxColumn
+            // 
+            this.customerNameDataGridViewTextBoxColumn.DataPropertyName = "CustomerName";
+            dataGridViewCellStyle3.NullValue = "+";
+            this.customerNameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            this.customerNameDataGridViewTextBoxColumn.HeaderText = "Name of Customer";
+            this.customerNameDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.customerNameDataGridViewTextBoxColumn.Name = "customerNameDataGridViewTextBoxColumn";
+            this.customerNameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.customerNameDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // previousKWHDataGridViewTextBoxColumn
+            // 
+            this.previousKWHDataGridViewTextBoxColumn.DataPropertyName = "PreviousKWH";
+            dataGridViewCellStyle4.NullValue = "+";
+            this.previousKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            this.previousKWHDataGridViewTextBoxColumn.HeaderText = "Previous kWh";
+            this.previousKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.previousKWHDataGridViewTextBoxColumn.Name = "previousKWHDataGridViewTextBoxColumn";
+            this.previousKWHDataGridViewTextBoxColumn.ReadOnly = true;
+            this.previousKWHDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // currentKWHDataGridViewTextBoxColumn
+            // 
+            this.currentKWHDataGridViewTextBoxColumn.DataPropertyName = "CurrentKWH";
+            dataGridViewCellStyle5.NullValue = "+";
+            this.currentKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            this.currentKWHDataGridViewTextBoxColumn.HeaderText = "Current kWh";
+            this.currentKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.currentKWHDataGridViewTextBoxColumn.Name = "currentKWHDataGridViewTextBoxColumn";
+            this.currentKWHDataGridViewTextBoxColumn.ReadOnly = true;
+            this.currentKWHDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // ratePerKWHDataGridViewTextBoxColumn
+            // 
+            this.ratePerKWHDataGridViewTextBoxColumn.DataPropertyName = "RatePerKWH";
+            dataGridViewCellStyle6.Format = "C2";
+            dataGridViewCellStyle6.NullValue = "+";
+            this.ratePerKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle6;
+            this.ratePerKWHDataGridViewTextBoxColumn.HeaderText = "Price Rate per kWh";
+            this.ratePerKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.ratePerKWHDataGridViewTextBoxColumn.Name = "ratePerKWHDataGridViewTextBoxColumn";
+            this.ratePerKWHDataGridViewTextBoxColumn.ReadOnly = true;
+            this.ratePerKWHDataGridViewTextBoxColumn.Width = 178;
+            // 
+            // priceDataGridViewTextBoxColumn
+            // 
+            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
+            dataGridViewCellStyle7.Format = "C2";
+            dataGridViewCellStyle7.NullValue = "+";
+            this.priceDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
+            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
+            this.priceDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
+            this.priceDataGridViewTextBoxColumn.ReadOnly = true;
+            this.priceDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // receiptNoDataGridViewTextBoxColumn
+            // 
+            this.receiptNoDataGridViewTextBoxColumn.DataPropertyName = "ReceiptNo";
+            dataGridViewCellStyle8.NullValue = "+";
+            this.receiptNoDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle8;
+            this.receiptNoDataGridViewTextBoxColumn.HeaderText = "Receipt #";
+            this.receiptNoDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.receiptNoDataGridViewTextBoxColumn.Name = "receiptNoDataGridViewTextBoxColumn";
+            this.receiptNoDataGridViewTextBoxColumn.ReadOnly = true;
+            this.receiptNoDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // Paid
+            // 
+            this.Paid.DataPropertyName = "Paid";
+            dataGridViewCellStyle9.NullValue = "+";
+            this.Paid.DefaultCellStyle = dataGridViewCellStyle9;
+            this.Paid.HeaderText = "Is it paid?";
+            this.Paid.Name = "Paid";
+            this.Paid.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(980, 409);
-            this.Controls.Add(this.UserLabel);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.MainControl);
             this.Controls.Add(this.strMain);
             this.MainMenuStrip = this.strMain;
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MinimumSize = new System.Drawing.Size(996, 448);
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -747,6 +860,12 @@ namespace CRUD_GROUP
             ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet)).EndInit();
             this.strMain.ResumeLayout(false);
             this.strMain.PerformLayout();
+            this.GraphTabControl.ResumeLayout(false);
+            this.PriceTrendPerKWH.ResumeLayout(false);
+            this.RateTrend.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picGraphPricePerKwh)).EndInit();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -783,13 +902,6 @@ namespace CRUD_GROUP
         private RecordsDataSet recordsDataSet;
         private System.Windows.Forms.BindingSource recordTableBindingSource;
         private RecordsDataSetTableAdapters.RecordTableTableAdapter recordTableTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn customerNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn previousKWHDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn currentKWHDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ratePerKWHDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn receiptNoDataGridViewTextBoxColumn;
         private System.Windows.Forms.TextBox txtCurrent;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label label4;
@@ -810,7 +922,19 @@ namespace CRUD_GROUP
         private RecordsDataSet1 recordsDataSet1;
         private System.Windows.Forms.BindingSource recordTableBindingSource1;
         private RecordsDataSet1TableAdapters.RecordTableTableAdapter recordTableTableAdapter1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Paid;
+        private TabControl GraphTabControl;
+        private TabPage PriceTrendPerKWH;
+        private TabPage RateTrend;
+        private PictureBox picGraphPricePerKwh;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn customerNameDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn previousKWHDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn currentKWHDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn ratePerKWHDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn receiptNoDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn Paid;
     }
 }
 
