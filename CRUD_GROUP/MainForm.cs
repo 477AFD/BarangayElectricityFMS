@@ -427,5 +427,15 @@ namespace CRUD_GROUP
         {
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PrintButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace CRUD_GROUP
+﻿using System.Windows.Forms;
+
+namespace CRUD_GROUP
 {
-    partial class MainForm
+    partial class MainForm : Form
     {
         /// <summary>
         /// Required designer variable.
@@ -37,7 +39,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.MainControl = new System.Windows.Forms.TabControl();
             this.Tab1 = new System.Windows.Forms.TabPage();
+            this.chkUnpaid = new System.Windows.Forms.CheckBox();
             this.FieldsPanel = new System.Windows.Forms.GroupBox();
+            this.PaidCheckBox = new System.Windows.Forms.CheckBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.CancelAddButton = new System.Windows.Forms.Button();
             this.txtID = new System.Windows.Forms.TextBox();
@@ -62,14 +66,17 @@
             this.ratePerKWHDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.receiptNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.recordTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.recordsDataSet = new CRUD_GROUP.RecordsDataSet();
+            this.Paid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.recordTableBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.recordsDataSet1 = new CRUD_GROUP.RecordsDataSet1();
             this.AddButton = new System.Windows.Forms.Button();
             this.Tab2 = new System.Windows.Forms.TabPage();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.PrintButton = new System.Windows.Forms.Button();
+            this.SaveCSVRecord = new System.Windows.Forms.Button();
+            this.SavePNGButton = new System.Windows.Forms.Button();
             this.picGraph = new System.Windows.Forms.PictureBox();
+            this.recordTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.recordsDataSet = new CRUD_GROUP.RecordsDataSet();
             this.strMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,23 +93,18 @@
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UserLabel = new System.Windows.Forms.Label();
             this.recordTableTableAdapter = new CRUD_GROUP.RecordsDataSetTableAdapters.RecordTableTableAdapter();
-            this.PaidCheckBox = new System.Windows.Forms.CheckBox();
-            this.chkUnpaid = new System.Windows.Forms.CheckBox();
-            this.recordsDataSet1 = new CRUD_GROUP.RecordsDataSet1();
-            this.recordTableBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.recordTableTableAdapter1 = new CRUD_GROUP.RecordsDataSet1TableAdapters.RecordTableTableAdapter();
-            this.Paid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MainControl.SuspendLayout();
             this.Tab1.SuspendLayout();
             this.FieldsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecords)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet1)).BeginInit();
             this.Tab2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picGraph)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet)).BeginInit();
             this.strMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // MainControl
@@ -113,7 +115,7 @@
             this.MainControl.Controls.Add(this.Tab1);
             this.MainControl.Controls.Add(this.Tab2);
             this.MainControl.Location = new System.Drawing.Point(9, 38);
-            this.MainControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MainControl.Margin = new System.Windows.Forms.Padding(2);
             this.MainControl.MinimumSize = new System.Drawing.Size(962, 352);
             this.MainControl.Name = "MainControl";
             this.MainControl.SelectedIndex = 0;
@@ -128,13 +130,24 @@
             this.Tab1.Controls.Add(this.dgvRecords);
             this.Tab1.Controls.Add(this.AddButton);
             this.Tab1.Location = new System.Drawing.Point(4, 22);
-            this.Tab1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab1.Margin = new System.Windows.Forms.Padding(2);
             this.Tab1.Name = "Tab1";
-            this.Tab1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab1.Padding = new System.Windows.Forms.Padding(2);
             this.Tab1.Size = new System.Drawing.Size(954, 326);
             this.Tab1.TabIndex = 0;
             this.Tab1.Text = "Records";
             this.Tab1.UseVisualStyleBackColor = true;
+            // 
+            // chkUnpaid
+            // 
+            this.chkUnpaid.AutoSize = true;
+            this.chkUnpaid.Location = new System.Drawing.Point(9, 62);
+            this.chkUnpaid.Name = "chkUnpaid";
+            this.chkUnpaid.Size = new System.Drawing.Size(126, 17);
+            this.chkUnpaid.TabIndex = 6;
+            this.chkUnpaid.Text = "Show unpaid records";
+            this.chkUnpaid.UseVisualStyleBackColor = true;
+            this.chkUnpaid.CheckedChanged += new System.EventHandler(this.chkUnpaid_CheckedChanged);
             // 
             // FieldsPanel
             // 
@@ -160,19 +173,32 @@
             this.FieldsPanel.Controls.Add(this.btnUpdate);
             this.FieldsPanel.Enabled = false;
             this.FieldsPanel.Location = new System.Drawing.Point(4, 5);
-            this.FieldsPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FieldsPanel.Margin = new System.Windows.Forms.Padding(2);
             this.FieldsPanel.Name = "FieldsPanel";
-            this.FieldsPanel.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FieldsPanel.Padding = new System.Windows.Forms.Padding(2);
             this.FieldsPanel.Size = new System.Drawing.Size(946, 318);
             this.FieldsPanel.TabIndex = 6;
             this.FieldsPanel.TabStop = false;
             this.FieldsPanel.Text = "Input";
             // 
+            // PaidCheckBox
+            // 
+            this.PaidCheckBox.AutoSize = true;
+            this.PaidCheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PaidCheckBox.Location = new System.Drawing.Point(27, 240);
+            this.PaidCheckBox.Name = "PaidCheckBox";
+            this.PaidCheckBox.Size = new System.Drawing.Size(87, 19);
+            this.PaidCheckBox.TabIndex = 22;
+            this.PaidCheckBox.Text = "Is this paid?";
+            this.PaidCheckBox.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.PaidCheckBox.UseVisualStyleBackColor = true;
+            this.PaidCheckBox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDelete.Location = new System.Drawing.Point(264, 278);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(128, 36);
             this.btnDelete.TabIndex = 21;
@@ -184,7 +210,7 @@
             // 
             this.CancelAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CancelAddButton.Location = new System.Drawing.Point(844, 278);
-            this.CancelAddButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CancelAddButton.Margin = new System.Windows.Forms.Padding(2);
             this.CancelAddButton.Name = "CancelAddButton";
             this.CancelAddButton.Size = new System.Drawing.Size(98, 36);
             this.CancelAddButton.TabIndex = 20;
@@ -197,7 +223,7 @@
             this.txtID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtID.Location = new System.Drawing.Point(118, 24);
-            this.txtID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtID.Margin = new System.Windows.Forms.Padding(2);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(804, 20);
             this.txtID.TabIndex = 19;
@@ -218,7 +244,7 @@
             this.txtReceipt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtReceipt.Location = new System.Drawing.Point(118, 200);
-            this.txtReceipt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtReceipt.Margin = new System.Windows.Forms.Padding(2);
             this.txtReceipt.Name = "txtReceipt";
             this.txtReceipt.Size = new System.Drawing.Size(804, 20);
             this.txtReceipt.TabIndex = 17;
@@ -239,7 +265,7 @@
             this.txtRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtRate.Location = new System.Drawing.Point(118, 164);
-            this.txtRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtRate.Margin = new System.Windows.Forms.Padding(2);
             this.txtRate.Name = "txtRate";
             this.txtRate.Size = new System.Drawing.Size(804, 20);
             this.txtRate.TabIndex = 15;
@@ -249,7 +275,7 @@
             this.txtPrev.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPrev.Location = new System.Drawing.Point(118, 92);
-            this.txtPrev.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtPrev.Margin = new System.Windows.Forms.Padding(2);
             this.txtPrev.Name = "txtPrev";
             this.txtPrev.Size = new System.Drawing.Size(804, 20);
             this.txtPrev.TabIndex = 14;
@@ -303,7 +329,7 @@
             this.txtCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCurrent.Location = new System.Drawing.Point(118, 128);
-            this.txtCurrent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCurrent.Margin = new System.Windows.Forms.Padding(2);
             this.txtCurrent.Name = "txtCurrent";
             this.txtCurrent.Size = new System.Drawing.Size(804, 20);
             this.txtCurrent.TabIndex = 8;
@@ -314,7 +340,7 @@
             this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtName.Location = new System.Drawing.Point(118, 59);
-            this.txtName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtName.Margin = new System.Windows.Forms.Padding(2);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(804, 20);
             this.txtName.TabIndex = 7;
@@ -324,7 +350,7 @@
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSave.Location = new System.Drawing.Point(4, 278);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(124, 36);
             this.btnSave.TabIndex = 3;
@@ -336,7 +362,7 @@
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnUpdate.Location = new System.Drawing.Point(132, 278);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(128, 36);
             this.btnUpdate.TabIndex = 4;
@@ -378,7 +404,7 @@
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvRecords.Location = new System.Drawing.Point(274, 5);
-            this.dgvRecords.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvRecords.Margin = new System.Windows.Forms.Padding(2);
             this.dgvRecords.MultiSelect = false;
             this.dgvRecords.Name = "dgvRecords";
             this.dgvRecords.ReadOnly = true;
@@ -460,20 +486,27 @@
             this.receiptNoDataGridViewTextBoxColumn.ReadOnly = true;
             this.receiptNoDataGridViewTextBoxColumn.Width = 125;
             // 
-            // recordTableBindingSource
+            // Paid
             // 
-            this.recordTableBindingSource.DataMember = "RecordTable";
-            this.recordTableBindingSource.DataSource = this.recordsDataSet;
+            this.Paid.DataPropertyName = "Paid";
+            this.Paid.HeaderText = "Paid";
+            this.Paid.Name = "Paid";
+            this.Paid.ReadOnly = true;
             // 
-            // recordsDataSet
+            // recordTableBindingSource1
             // 
-            this.recordsDataSet.DataSetName = "RecordsDataSet";
-            this.recordsDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.recordTableBindingSource1.DataMember = "RecordTable";
+            this.recordTableBindingSource1.DataSource = this.recordsDataSet1;
+            // 
+            // recordsDataSet1
+            // 
+            this.recordsDataSet1.DataSetName = "RecordsDataSet1";
+            this.recordsDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // AddButton
             // 
             this.AddButton.Location = new System.Drawing.Point(9, 7);
-            this.AddButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(2);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(256, 36);
             this.AddButton.TabIndex = 1;
@@ -483,51 +516,53 @@
             // 
             // Tab2
             // 
-            this.Tab2.Controls.Add(this.button6);
-            this.Tab2.Controls.Add(this.button5);
-            this.Tab2.Controls.Add(this.button4);
+            this.Tab2.Controls.Add(this.PrintButton);
+            this.Tab2.Controls.Add(this.SaveCSVRecord);
+            this.Tab2.Controls.Add(this.SavePNGButton);
             this.Tab2.Controls.Add(this.picGraph);
             this.Tab2.Location = new System.Drawing.Point(4, 22);
-            this.Tab2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab2.Margin = new System.Windows.Forms.Padding(2);
             this.Tab2.Name = "Tab2";
-            this.Tab2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab2.Padding = new System.Windows.Forms.Padding(2);
             this.Tab2.Size = new System.Drawing.Size(954, 326);
             this.Tab2.TabIndex = 1;
             this.Tab2.Text = "Graph";
             this.Tab2.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // PrintButton
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.Location = new System.Drawing.Point(162, 232);
-            this.button6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(57, 33);
-            this.button6.TabIndex = 3;
-            this.button6.Text = "Print...";
-            this.button6.UseVisualStyleBackColor = true;
+            this.PrintButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PrintButton.Location = new System.Drawing.Point(162, 232);
+            this.PrintButton.Margin = new System.Windows.Forms.Padding(2);
+            this.PrintButton.Name = "PrintButton";
+            this.PrintButton.Size = new System.Drawing.Size(57, 33);
+            this.PrintButton.TabIndex = 3;
+            this.PrintButton.Text = "Print...";
+            this.PrintButton.UseVisualStyleBackColor = true;
+            this.PrintButton.Click += new System.EventHandler(this.PrintButton_Click);
             // 
-            // button5
+            // SaveCSVRecord
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button5.Location = new System.Drawing.Point(14, 270);
-            this.button5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(144, 33);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "Save as CSV...";
-            this.button5.UseVisualStyleBackColor = true;
+            this.SaveCSVRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SaveCSVRecord.Location = new System.Drawing.Point(14, 270);
+            this.SaveCSVRecord.Margin = new System.Windows.Forms.Padding(2);
+            this.SaveCSVRecord.Name = "SaveCSVRecord";
+            this.SaveCSVRecord.Size = new System.Drawing.Size(144, 33);
+            this.SaveCSVRecord.TabIndex = 2;
+            this.SaveCSVRecord.Text = "Save as CSV...";
+            this.SaveCSVRecord.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // SavePNGButton
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button4.Location = new System.Drawing.Point(14, 232);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(144, 33);
-            this.button4.TabIndex = 1;
-            this.button4.Text = "Save as PNG...";
-            this.button4.UseVisualStyleBackColor = true;
+            this.SavePNGButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SavePNGButton.Location = new System.Drawing.Point(14, 232);
+            this.SavePNGButton.Margin = new System.Windows.Forms.Padding(2);
+            this.SavePNGButton.Name = "SavePNGButton";
+            this.SavePNGButton.Size = new System.Drawing.Size(144, 33);
+            this.SavePNGButton.TabIndex = 1;
+            this.SavePNGButton.Text = "Save as PNG...";
+            this.SavePNGButton.UseVisualStyleBackColor = true;
+            this.SavePNGButton.Click += new System.EventHandler(this.button4_Click);
             // 
             // picGraph
             // 
@@ -535,11 +570,21 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picGraph.Location = new System.Drawing.Point(4, 5);
-            this.picGraph.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.picGraph.Margin = new System.Windows.Forms.Padding(2);
             this.picGraph.Name = "picGraph";
             this.picGraph.Size = new System.Drawing.Size(946, 212);
             this.picGraph.TabIndex = 0;
             this.picGraph.TabStop = false;
+            // 
+            // recordTableBindingSource
+            // 
+            this.recordTableBindingSource.DataMember = "RecordTable";
+            this.recordTableBindingSource.DataSource = this.recordsDataSet;
+            // 
+            // recordsDataSet
+            // 
+            this.recordsDataSet.DataSetName = "RecordsDataSet";
+            this.recordsDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // strMain
             // 
@@ -576,13 +621,13 @@
             this.changeAccountToolStripMenuItem,
             this.logOutToolStripMenuItem});
             this.accountInformationToolStripMenuItem.Name = "accountInformationToolStripMenuItem";
-            this.accountInformationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.accountInformationToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.accountInformationToolStripMenuItem.Text = "Account";
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.infoToolStripMenuItem.Text = "New Account...";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -606,12 +651,12 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(135, 6);
             // 
             // exitAltF4ToolStripMenuItem
             // 
             this.exitAltF4ToolStripMenuItem.Name = "exitAltF4ToolStripMenuItem";
-            this.exitAltF4ToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.exitAltF4ToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.exitAltF4ToolStripMenuItem.Text = "Exit (Alt+F4)";
             // 
             // graphToolStripMenuItem
@@ -668,50 +713,9 @@
             // 
             this.recordTableTableAdapter.ClearBeforeFill = true;
             // 
-            // PaidCheckBox
-            // 
-            this.PaidCheckBox.AutoSize = true;
-            this.PaidCheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PaidCheckBox.Location = new System.Drawing.Point(27, 240);
-            this.PaidCheckBox.Name = "PaidCheckBox";
-            this.PaidCheckBox.Size = new System.Drawing.Size(87, 19);
-            this.PaidCheckBox.TabIndex = 22;
-            this.PaidCheckBox.Text = "Is this paid?";
-            this.PaidCheckBox.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.PaidCheckBox.UseVisualStyleBackColor = true;
-            this.PaidCheckBox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // chkUnpaid
-            // 
-            this.chkUnpaid.AutoSize = true;
-            this.chkUnpaid.Location = new System.Drawing.Point(9, 62);
-            this.chkUnpaid.Name = "chkUnpaid";
-            this.chkUnpaid.Size = new System.Drawing.Size(126, 17);
-            this.chkUnpaid.TabIndex = 6;
-            this.chkUnpaid.Text = "Show unpaid records";
-            this.chkUnpaid.UseVisualStyleBackColor = true;
-            this.chkUnpaid.CheckedChanged += new System.EventHandler(this.chkUnpaid_CheckedChanged);
-            // 
-            // recordsDataSet1
-            // 
-            this.recordsDataSet1.DataSetName = "RecordsDataSet1";
-            this.recordsDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // recordTableBindingSource1
-            // 
-            this.recordTableBindingSource1.DataMember = "RecordTable";
-            this.recordTableBindingSource1.DataSource = this.recordsDataSet1;
-            // 
             // recordTableTableAdapter1
             // 
             this.recordTableTableAdapter1.ClearBeforeFill = true;
-            // 
-            // Paid
-            // 
-            this.Paid.DataPropertyName = "Paid";
-            this.Paid.HeaderText = "Paid";
-            this.Paid.Name = "Paid";
-            this.Paid.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -723,7 +727,7 @@
             this.Controls.Add(this.MainControl);
             this.Controls.Add(this.strMain);
             this.MainMenuStrip = this.strMain;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -735,14 +739,14 @@
             this.FieldsPanel.ResumeLayout(false);
             this.FieldsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecords)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet1)).EndInit();
             this.Tab2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picGraph)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet)).EndInit();
             this.strMain.ResumeLayout(false);
             this.strMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -760,9 +764,9 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem graphToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox SearchComboBox;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button PrintButton;
+        private System.Windows.Forms.Button SaveCSVRecord;
+        private System.Windows.Forms.Button SavePNGButton;
         private System.Windows.Forms.PictureBox picGraph;
         private System.Windows.Forms.Label UserLabel;
         private System.Windows.Forms.ToolStripMenuItem accountInformationToolStripMenuItem;

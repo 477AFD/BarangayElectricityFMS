@@ -19,9 +19,14 @@ namespace CRUD_GROUP
 
         public DatabaseWorker()
         {
-            conStr = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Administrator\\Documents\\Roldan V. H\\CRUD_GROUP\\CRUD_GROUP\\Records.mdf;Integrated Security=True";
+            conStr = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Kersti\\source\\repos\\CRUD_GROUP\\CRUD_GROUP\\Records.mdf;Integrated Security=True";
             sqlCon = new SqlConnection(conStr);
             sqlCon.Open();
+        }
+
+        ~DatabaseWorker()
+        {
+            try { sqlCon.Close(); } catch { }
         }
 
         public int ExecuteNonQuery(String sql)
