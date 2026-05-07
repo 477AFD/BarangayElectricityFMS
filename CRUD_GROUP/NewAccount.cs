@@ -7,59 +7,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace CRUD_GROUP
 {
-    public partial class SignUpForm : Form
+    public partial class NewAccount : Form
     {
         DatabaseWorker w;
-
-        public SignUpForm()
+        public NewAccount(DatabaseWorker db)
         {
             InitializeComponent();
-            w = new DatabaseWorker();
+            w = db;
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void NewAccount_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
+        private void ExitButton_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void panel4_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void txtUserName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
-        }
-
-        private void LogIn_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Hide();
-            Program.fLog.Show();
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
         private int GetLastID()
         {
@@ -72,10 +40,10 @@ namespace CRUD_GROUP
             }
             return lastID;
         }
-        private void SignupButton_Click(object sender, EventArgs e)
+        private void CreateButton_Click(object sender, EventArgs e)
         {
             bool[] t = new bool[6];
-            t[0] = !string.IsNullOrWhiteSpace(txtUsername.Text) && !txtUsername.Text.Contains(' ');
+            t[0] = !string.IsNullOrWhiteSpace(txtName.Text) && !txtName.Text.Contains(' ');
             t[1] = !string.IsNullOrWhiteSpace(txtDisplayName.Text);
             t[2] = !string.IsNullOrEmpty(txtPwd.Text);
             t[3] = !string.IsNullOrEmpty(txtConfPwd.Text);
@@ -88,7 +56,7 @@ namespace CRUD_GROUP
              * T T [T4]
              */
             DataTable ptr = w.ExecuteQuery("SELECT Username FROM AccountTBL");
-
+            
             t[4] = !t[2] || !t[3] || (txtConfPwd.Text == txtPwd.Text);
             string wpetoro = "Please correct the following fields:";
             wpetoro += !t[0] ? "\n- The username is empty or contains spaces" : "";
@@ -99,7 +67,7 @@ namespace CRUD_GROUP
             t[5] = true;
             foreach (DataRow p in ptr.Rows)
             {
-                if (txtUsername.Text.ToUpper() == p["Username"].ToString().ToUpper())
+                if (txtName.Text.ToUpper() == p["Username"].ToString().ToUpper())
                 {
                     wpetoro += "\n- The username matches with another one, try another username!";
                     t[5] = false;
@@ -110,37 +78,32 @@ namespace CRUD_GROUP
             {
                 // Create new account!
                 int idx = GetLastID();
-                int pf = 0;
-                string cmd = $"INSERT INTO AccountTBL VALUES ({idx}, '{txtUsername.Text}','{txtPwd.Text}', {pf}, '{txtDisplayName.Text}')";
+                int pf = (AdminAcc.Checked) ? 1 : 0;
+                string cmd = $"INSERT INTO AccountTBL VALUES ({idx}, '{txtName.Text}','{txtPwd.Text}', {pf}, '{txtDisplayName.Text}')";
                 try
                 {
                     int rows = w.ExecuteNonQuery(cmd);
                     if (rows > 0)
                     {
                         MessageBox.Show("Account created!", $"Affected rows: {rows}", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Hide();
-                        Program.fLog.Show();
+                        DialogResult = DialogResult.OK;
+                        Close();
                     }
                     else
                     {
                         MessageBox.Show("An error has been occured.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                        
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Sorry, Zelda found a SEEKER in her Minecraft world.\n\n{ex}", "Guru meditation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Sorry, Zelda found a SEEKER in her Minecraft world.\n\n{ex}","Guru meditation",MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
                 MessageBox.Show(wpetoro, "Validation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void SignUpForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Program.fLog.Close();
         }
     }
 }

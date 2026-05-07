@@ -40,10 +40,18 @@ namespace CRUD_GROUP
                 KeyValuePair<string, string> account = new KeyValuePair<string, string>(txtUsername.Text, txtPassword.Text);
                 MainForm main = new MainForm(account);
                 Hide();
-                main.ShowDialog();
-                txtUsername.Text = string.Empty;
-                txtPassword.Text = string.Empty;
-                Show();
+                DialogResult t = main.ShowDialog();
+                if (t == DialogResult.OK)
+                {
+                    txtUsername.Text = string.Empty;
+                    txtPassword.Text = string.Empty;
+                    Show();
+                } else
+                {
+                    txtUsername.Text = string.Empty;
+                    txtPassword.Text = string.Empty;
+                    Close();
+                }
             }
             catch (AccessViolationException ew)
             {
@@ -59,6 +67,7 @@ namespace CRUD_GROUP
             catch (Exception ex)
             {
                 MessageBox.Show($"Seeker Detected:\n{ex}", "Guru meditation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
             }
         }
 
@@ -86,6 +95,11 @@ namespace CRUD_GROUP
         private void linkLabel6_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             txtPassword.UseSystemPasswordChar = !txtPassword.UseSystemPasswordChar;
+        }
+
+        private void Login_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Program.fSignUpForm.Close();
         }
     }
 }

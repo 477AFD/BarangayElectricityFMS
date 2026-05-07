@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Drawing.Printing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -152,29 +153,31 @@ namespace GraphingTests
                 g.Flush();
             }
         }
-        // NOTE: This method is DrawGraph() corrected by AI using the code above (without the EXT) (Google Gemini) but contains modifications.
-        public void DrawLineExt(PictureBox canvas, int index, Color color, Point? res = null, int GraphIntervalX = 10, int GraphIntervalY = 100)
+
+        public int ClickedIndex { get; private set; } = -1;
+
+        public void DrawLineExt(PictureBox canvas, int index, Color color, Point? res = null, int GraphIntervalX = 10, int GraphIntervalY = 100, bool isSnapshot = false, Point? click = null, bool doubleClick = false)
         {
             Point r = res ?? new Point(canvas.Width, canvas.Height);
-            canvas.Image = new Bitmap(r.X, r.Y);
-
+            canvas.Image = (!isSnapshot) ? new Bitmap(r.X, r.Y) : new Bitmap(7680, 4320);
+             
             using (Graphics g = Graphics.FromImage(canvas.Image))
             {
                 List<decimal> run = listSets[index];
                 if (run.Count < 2) return;
                 g.Clear(Color.White);
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                const int marginLeft = 50;
-                const int marginOther = 10;
+                int marginLeft = (isSnapshot) ? 233 : 50;
+                int marginOther = (isSnapshot) ? 15 : 10;
                 int drawWidth = canvas.Image.Width - marginLeft - marginOther;
                 int drawHeight = canvas.Image.Height - (marginOther * 2);
                 decimal min = run.Min();
                 decimal max = run.Max();
                 decimal range = (max - min == 0) ? 1 : (max - min);
-                Pen gray = new Pen(Color.FromArgb(220, 220, 220), 1f);
-                Pen linePen = new Pen(color, 2f);
-                Font labelFont = new Font("Bahnschrift", 7f);
+                Pen gray = (!isSnapshot) ? new Pen(Color.FromArgb(220, 220, 220), 1f) : new Pen(Color.FromArgb(220, 220, 220), 4f);
+                Pen linePen = (!isSnapshot) ? new Pen(color, 2f) : new Pen(color, 10f);
+                Font labelFont = (!isSnapshot) ? new Font("Bahnschrift", 7f) : new Font("Arial", 35f);
                 Brush labelBrush = Brushes.Gray;
                 decimal startVal = Math.Floor(min / GraphIntervalY) * GraphIntervalY;
 
@@ -196,15 +199,56 @@ namespace GraphingTests
                     float xPos = marginLeft + (i * xStep);
                     g.DrawLine(gray, xPos, marginOther, xPos, canvas.Image.Height - marginOther);
                 }
+                List<KeyValuePair<Point, int>> ptrs = new List<KeyValuePair<Point, int>>(); // Stores the point and its index
                 for (int i = 0; i < run.Count - 1; ++i)
                 {
                     float x1 = marginLeft + (i * xStep);
                     float y1 = (float)(marginOther + drawHeight - (((run[i] - min) / range) * drawHeight));
                     float x2 = marginLeft + ((i + 1) * xStep);
                     float y2 = (float)(marginOther + drawHeight - (((run[i + 1] - min) / range) * drawHeight));
-
+                    if (i == 0) ptrs.Add(new KeyValuePair<Point, int>(new Point((int)x1, (int)y1), i));
+                    ptrs.Add(new KeyValuePair<Point, int>(new Point((int)x2, (int)y2), i + 1));
                     g.DrawLine(linePen, x1, y1, x2, y2);
                 }
+                Pen crosshair = new Pen(Color.FromArgb(77,0,0,0), 1.666667f);
+                Pen target = new Pen(Color.FromArgb(255, 0, 128, 0), 3f);
+                // After this, render the lines in click (circle) and double-click (crosshair) when the image is clicked (like a touchscreen)
+                if (click != null)
+                {
+                    Point c = (Point)click;
+                    if (doubleClick && c.X > marginLeft && c.X < canvas.Image.Width - marginOther && c.Y > marginOther && c.Y < canvas.Image.Height - marginOther)
+                    {
+                        bool t = false;
+                        foreach (KeyValuePair<Point, int> nptr in ptrs)
+                        {
+                            if (c.X <= nptr.Key.X + 25 && c.X >= nptr.Key.X - 25 && c.Y <= nptr.Key.Y + 25 && c.Y >= nptr.Key.Y - 25)
+                            {
+                                // Horizontal
+                                g.DrawLine(target, marginLeft, nptr.Key.Y, canvas.Image.Width - marginOther, nptr.Key.Y);
+                                // Vertical
+                                g.DrawLine(target, nptr.Key.X, marginOther, nptr.Key.X, canvas.Image.Height - marginOther);
+                                ClickedIndex = nptr.Value;
+                                t = true;
+                                break;
+                            }
+                        }
+                        if (!t)
+                        {
+                            ClickedIndex = -1;
+                            // Horizontal
+                            g.DrawLine(crosshair, marginLeft, c.Y, canvas.Image.Width - marginOther, c.Y);
+                            // Vertical
+                            g.DrawLine(crosshair, c.X, marginOther, c.X, canvas.Image.Height - marginOther);
+                        }
+
+                    }
+                    else
+                    {
+                        g.DrawEllipse(crosshair, new Rectangle(new Point(c.X - 4, c.Y - 4), new Size(9, 9)));
+                    }
+                }
+                else ClickedIndex = -1;
+                
                 g.Flush();
             }
         }

@@ -9,7 +9,7 @@ using System.Security.Policy;
 
 namespace CRUD_GROUP
 {
-    internal class DatabaseWorker
+    public class DatabaseWorker
     {
         DataTable dTable;
         SqlDataAdapter sqlDA;
@@ -18,7 +18,7 @@ namespace CRUD_GROUP
         string conStr;
 
         public DatabaseWorker()
-        {
+        { // Paste the connection string here. Be sure to include double quotation marks (")!
             conStr = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Kersti\\source\\repos\\CRUD_GROUP\\CRUD_GROUP\\Records.mdf;Integrated Security=True";
             sqlCon = new SqlConnection(conStr);
             sqlCon.Open();
