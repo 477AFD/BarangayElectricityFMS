@@ -99,6 +99,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RecordsDataSet1.xsd</DependentUpon>
     </Compile>
+    <Compile Include="RecordsDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RecordsDataSet2.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SignUpForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,18 +174,20 @@
     <None Include="RecordsDataSet1.xss">
       <DependentUpon>RecordsDataSet1.xsd</DependentUpon>
     </None>
+    <None Include="RecordsDataSet2.xsc">
+      <DependentUpon>RecordsDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="RecordsDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RecordsDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="RecordsDataSet2.xss">
+      <DependentUpon>RecordsDataSet2.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Records.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Records_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Records.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

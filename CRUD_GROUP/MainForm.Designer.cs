@@ -34,18 +34,18 @@ namespace CRUD_GROUP
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle85 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle95 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle96 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle86 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle87 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle88 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle89 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle90 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle91 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle92 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle93 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle94 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
             this.MainControl = new System.Windows.Forms.TabControl();
             this.Tab1 = new System.Windows.Forms.TabPage();
             this.chkUnpaid = new System.Windows.Forms.CheckBox();
@@ -77,8 +77,8 @@ namespace CRUD_GROUP
             this.receiptNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Paid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.recordTableBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.recordList = new CRUD_GROUP.RecordList();
+            this.recordTableBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
+            this.recordsDataSet2 = new CRUD_GROUP.RecordsDataSet2();
             this.AddButton = new System.Windows.Forms.Button();
             this.Tab2 = new System.Windows.Forms.TabPage();
             this.GraphInfo = new System.Windows.Forms.Label();
@@ -90,6 +90,8 @@ namespace CRUD_GROUP
             this.PrintButton = new System.Windows.Forms.Button();
             this.SaveCSVRecord = new System.Windows.Forms.Button();
             this.SavePNGButton = new System.Windows.Forms.Button();
+            this.recordTableBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.recordList = new CRUD_GROUP.RecordList();
             this.recordTableBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.recordsDataSet1 = new CRUD_GROUP.RecordsDataSet1();
             this.recordTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -112,18 +114,21 @@ namespace CRUD_GROUP
             this.recordTableTableAdapter1 = new CRUD_GROUP.RecordsDataSet1TableAdapters.RecordTableTableAdapter();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.recordTableTableAdapter2 = new CRUD_GROUP.RecordListTableAdapters.RecordTableTableAdapter();
+            this.recordTableTableAdapter3 = new CRUD_GROUP.RecordsDataSet2TableAdapters.RecordTableTableAdapter();
             this.MainControl.SuspendLayout();
             this.Tab1.SuspendLayout();
             this.FieldsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecords)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet2)).BeginInit();
             this.Tab2.SuspendLayout();
             this.GraphTabControl.SuspendLayout();
             this.PriceTrendPerKWH.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picGraph)).BeginInit();
             this.RateTrend.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picGraphPricePerKwh)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource)).BeginInit();
@@ -139,12 +144,12 @@ namespace CRUD_GROUP
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MainControl.Controls.Add(this.Tab1);
             this.MainControl.Controls.Add(this.Tab2);
-            this.MainControl.Location = new System.Drawing.Point(9, 38);
-            this.MainControl.Margin = new System.Windows.Forms.Padding(2);
-            this.MainControl.MinimumSize = new System.Drawing.Size(962, 352);
+            this.MainControl.Location = new System.Drawing.Point(12, 47);
+            this.MainControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MainControl.MinimumSize = new System.Drawing.Size(1283, 433);
             this.MainControl.Name = "MainControl";
             this.MainControl.SelectedIndex = 0;
-            this.MainControl.Size = new System.Drawing.Size(962, 352);
+            this.MainControl.Size = new System.Drawing.Size(1283, 433);
             this.MainControl.TabIndex = 0;
             this.MainControl.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -154,11 +159,11 @@ namespace CRUD_GROUP
             this.Tab1.Controls.Add(this.FieldsPanel);
             this.Tab1.Controls.Add(this.dgvRecords);
             this.Tab1.Controls.Add(this.AddButton);
-            this.Tab1.Location = new System.Drawing.Point(4, 22);
-            this.Tab1.Margin = new System.Windows.Forms.Padding(2);
+            this.Tab1.Location = new System.Drawing.Point(4, 25);
+            this.Tab1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Tab1.Name = "Tab1";
-            this.Tab1.Padding = new System.Windows.Forms.Padding(2);
-            this.Tab1.Size = new System.Drawing.Size(954, 326);
+            this.Tab1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Tab1.Size = new System.Drawing.Size(1275, 404);
             this.Tab1.TabIndex = 0;
             this.Tab1.Text = "Records";
             this.Tab1.UseVisualStyleBackColor = true;
@@ -166,9 +171,10 @@ namespace CRUD_GROUP
             // chkUnpaid
             // 
             this.chkUnpaid.AutoSize = true;
-            this.chkUnpaid.Location = new System.Drawing.Point(9, 62);
+            this.chkUnpaid.Location = new System.Drawing.Point(12, 76);
+            this.chkUnpaid.Margin = new System.Windows.Forms.Padding(4);
             this.chkUnpaid.Name = "chkUnpaid";
-            this.chkUnpaid.Size = new System.Drawing.Size(126, 17);
+            this.chkUnpaid.Size = new System.Drawing.Size(155, 20);
             this.chkUnpaid.TabIndex = 6;
             this.chkUnpaid.Text = "Show unpaid records";
             this.chkUnpaid.UseVisualStyleBackColor = true;
@@ -197,11 +203,11 @@ namespace CRUD_GROUP
             this.FieldsPanel.Controls.Add(this.btnSave);
             this.FieldsPanel.Controls.Add(this.btnUpdate);
             this.FieldsPanel.Enabled = false;
-            this.FieldsPanel.Location = new System.Drawing.Point(4, 5);
-            this.FieldsPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.FieldsPanel.Location = new System.Drawing.Point(5, 6);
+            this.FieldsPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.FieldsPanel.Name = "FieldsPanel";
-            this.FieldsPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.FieldsPanel.Size = new System.Drawing.Size(946, 318);
+            this.FieldsPanel.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.FieldsPanel.Size = new System.Drawing.Size(1261, 391);
             this.FieldsPanel.TabIndex = 6;
             this.FieldsPanel.TabStop = false;
             this.FieldsPanel.Text = "Input";
@@ -210,9 +216,10 @@ namespace CRUD_GROUP
             // 
             this.PaidCheckBox.AutoSize = true;
             this.PaidCheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PaidCheckBox.Location = new System.Drawing.Point(27, 240);
+            this.PaidCheckBox.Location = new System.Drawing.Point(36, 295);
+            this.PaidCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.PaidCheckBox.Name = "PaidCheckBox";
-            this.PaidCheckBox.Size = new System.Drawing.Size(87, 19);
+            this.PaidCheckBox.Size = new System.Drawing.Size(109, 24);
             this.PaidCheckBox.TabIndex = 22;
             this.PaidCheckBox.Text = "Is this paid?";
             this.PaidCheckBox.TextAlign = System.Drawing.ContentAlignment.TopLeft;
@@ -223,10 +230,10 @@ namespace CRUD_GROUP
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDelete.Location = new System.Drawing.Point(264, 278);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDelete.Location = new System.Drawing.Point(352, 342);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(128, 36);
+            this.btnDelete.Size = new System.Drawing.Size(171, 44);
             this.btnDelete.TabIndex = 21;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -236,10 +243,10 @@ namespace CRUD_GROUP
             // 
             this.CancelAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CancelAddButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.CancelAddButton.Location = new System.Drawing.Point(844, 278);
-            this.CancelAddButton.Margin = new System.Windows.Forms.Padding(2);
+            this.CancelAddButton.Location = new System.Drawing.Point(1125, 342);
+            this.CancelAddButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CancelAddButton.Name = "CancelAddButton";
-            this.CancelAddButton.Size = new System.Drawing.Size(98, 36);
+            this.CancelAddButton.Size = new System.Drawing.Size(131, 44);
             this.CancelAddButton.TabIndex = 20;
             this.CancelAddButton.Text = "Cancel";
             this.CancelAddButton.UseVisualStyleBackColor = true;
@@ -249,20 +256,19 @@ namespace CRUD_GROUP
             // 
             this.txtID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtID.Location = new System.Drawing.Point(118, 24);
-            this.txtID.Margin = new System.Windows.Forms.Padding(2);
+            this.txtID.Location = new System.Drawing.Point(157, 30);
+            this.txtID.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtID.Name = "txtID";
-            this.txtID.Size = new System.Drawing.Size(804, 20);
+            this.txtID.Size = new System.Drawing.Size(1071, 22);
             this.txtID.TabIndex = 19;
             // 
             // lblID
             // 
             this.lblID.AutoSize = true;
             this.lblID.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblID.Location = new System.Drawing.Point(24, 24);
-            this.lblID.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblID.Location = new System.Drawing.Point(32, 30);
             this.lblID.Name = "lblID";
-            this.lblID.Size = new System.Drawing.Size(21, 15);
+            this.lblID.Size = new System.Drawing.Size(27, 20);
             this.lblID.TabIndex = 18;
             this.lblID.Text = "ID:";
             // 
@@ -270,20 +276,19 @@ namespace CRUD_GROUP
             // 
             this.txtReceipt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtReceipt.Location = new System.Drawing.Point(118, 200);
-            this.txtReceipt.Margin = new System.Windows.Forms.Padding(2);
+            this.txtReceipt.Location = new System.Drawing.Point(157, 246);
+            this.txtReceipt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtReceipt.Name = "txtReceipt";
-            this.txtReceipt.Size = new System.Drawing.Size(804, 20);
+            this.txtReceipt.Size = new System.Drawing.Size(1071, 22);
             this.txtReceipt.TabIndex = 17;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(24, 202);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(32, 249);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 15);
+            this.label2.Size = new System.Drawing.Size(89, 20);
             this.label2.TabIndex = 16;
             this.label2.Text = "Receipt No.:";
             // 
@@ -291,30 +296,29 @@ namespace CRUD_GROUP
             // 
             this.txtRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtRate.Location = new System.Drawing.Point(118, 164);
-            this.txtRate.Margin = new System.Windows.Forms.Padding(2);
+            this.txtRate.Location = new System.Drawing.Point(157, 202);
+            this.txtRate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtRate.Name = "txtRate";
-            this.txtRate.Size = new System.Drawing.Size(804, 20);
+            this.txtRate.Size = new System.Drawing.Size(1071, 22);
             this.txtRate.TabIndex = 15;
             // 
             // txtPrev
             // 
             this.txtPrev.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPrev.Location = new System.Drawing.Point(118, 92);
-            this.txtPrev.Margin = new System.Windows.Forms.Padding(2);
+            this.txtPrev.Location = new System.Drawing.Point(157, 113);
+            this.txtPrev.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPrev.Name = "txtPrev";
-            this.txtPrev.Size = new System.Drawing.Size(804, 20);
+            this.txtPrev.Size = new System.Drawing.Size(1071, 22);
             this.txtPrev.TabIndex = 14;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(24, 166);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Location = new System.Drawing.Point(32, 204);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(83, 15);
+            this.label6.Size = new System.Drawing.Size(106, 20);
             this.label6.TabIndex = 13;
             this.label6.Text = "Rate per KWH:";
             // 
@@ -322,10 +326,9 @@ namespace CRUD_GROUP
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(24, 128);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(32, 158);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(80, 15);
+            this.label5.Size = new System.Drawing.Size(98, 20);
             this.label5.TabIndex = 12;
             this.label5.Text = "Current KWH:";
             // 
@@ -333,10 +336,9 @@ namespace CRUD_GROUP
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(24, 92);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(32, 113);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(85, 15);
+            this.label4.Size = new System.Drawing.Size(105, 20);
             this.label4.TabIndex = 11;
             this.label4.Text = "Previous KWH:";
             // 
@@ -344,10 +346,9 @@ namespace CRUD_GROUP
             // 
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(24, 59);
-            this.lblName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblName.Location = new System.Drawing.Point(32, 73);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(42, 15);
+            this.lblName.Size = new System.Drawing.Size(52, 20);
             this.lblName.TabIndex = 10;
             this.lblName.Text = "Name:";
             // 
@@ -355,10 +356,10 @@ namespace CRUD_GROUP
             // 
             this.txtCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCurrent.Location = new System.Drawing.Point(118, 128);
-            this.txtCurrent.Margin = new System.Windows.Forms.Padding(2);
+            this.txtCurrent.Location = new System.Drawing.Point(157, 158);
+            this.txtCurrent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtCurrent.Name = "txtCurrent";
-            this.txtCurrent.Size = new System.Drawing.Size(804, 20);
+            this.txtCurrent.Size = new System.Drawing.Size(1071, 22);
             this.txtCurrent.TabIndex = 8;
             this.txtCurrent.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
@@ -366,10 +367,10 @@ namespace CRUD_GROUP
             // 
             this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(118, 59);
-            this.txtName.Margin = new System.Windows.Forms.Padding(2);
+            this.txtName.Location = new System.Drawing.Point(157, 73);
+            this.txtName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(804, 20);
+            this.txtName.Size = new System.Drawing.Size(1071, 22);
             this.txtName.TabIndex = 7;
             this.txtName.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
@@ -377,10 +378,10 @@ namespace CRUD_GROUP
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSave.Location = new System.Drawing.Point(4, 278);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSave.Location = new System.Drawing.Point(5, 342);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(124, 36);
+            this.btnSave.Size = new System.Drawing.Size(165, 44);
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save/New Record";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -390,10 +391,10 @@ namespace CRUD_GROUP
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUpdate.Location = new System.Drawing.Point(132, 278);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
+            this.btnUpdate.Location = new System.Drawing.Point(176, 342);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(128, 36);
+            this.btnUpdate.Size = new System.Drawing.Size(171, 44);
             this.btnUpdate.TabIndex = 4;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
@@ -405,14 +406,14 @@ namespace CRUD_GROUP
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvRecords.AutoGenerateColumns = false;
-            dataGridViewCellStyle85.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle85.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle85.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle85.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle85.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle85.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle85.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecords.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle85;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecords.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.dgvRecords.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRecords.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.iDDataGridViewTextBoxColumn,
@@ -424,40 +425,40 @@ namespace CRUD_GROUP
             this.receiptNoDataGridViewTextBoxColumn,
             this.Paid,
             this.DateCreated});
-            this.dgvRecords.DataSource = this.recordTableBindingSource2;
-            dataGridViewCellStyle95.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle95.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle95.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle95.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle95.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle95.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle95.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle95;
-            this.dgvRecords.Location = new System.Drawing.Point(274, 5);
-            this.dgvRecords.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvRecords.DataSource = this.recordTableBindingSource3;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle23.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle23;
+            this.dgvRecords.Location = new System.Drawing.Point(365, 6);
+            this.dgvRecords.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvRecords.MultiSelect = false;
             this.dgvRecords.Name = "dgvRecords";
             this.dgvRecords.ReadOnly = true;
-            dataGridViewCellStyle96.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle96.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle96.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle96.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle96.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle96.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle96.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecords.RowHeadersDefaultCellStyle = dataGridViewCellStyle96;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecords.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
             this.dgvRecords.RowHeadersWidth = 51;
             this.dgvRecords.RowTemplate.Height = 24;
             this.dgvRecords.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRecords.Size = new System.Drawing.Size(676, 318);
+            this.dgvRecords.Size = new System.Drawing.Size(901, 391);
             this.dgvRecords.TabIndex = 0;
             this.dgvRecords.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // iDDataGridViewTextBoxColumn
             // 
             this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            dataGridViewCellStyle86.NullValue = "+";
-            this.iDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle86;
+            dataGridViewCellStyle14.NullValue = "+";
+            this.iDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle14;
             this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
             this.iDDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
@@ -468,8 +469,8 @@ namespace CRUD_GROUP
             // customerNameDataGridViewTextBoxColumn
             // 
             this.customerNameDataGridViewTextBoxColumn.DataPropertyName = "CustomerName";
-            dataGridViewCellStyle87.NullValue = "+";
-            this.customerNameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle87;
+            dataGridViewCellStyle15.NullValue = "+";
+            this.customerNameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle15;
             this.customerNameDataGridViewTextBoxColumn.HeaderText = "Name of Customer";
             this.customerNameDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.customerNameDataGridViewTextBoxColumn.Name = "customerNameDataGridViewTextBoxColumn";
@@ -479,8 +480,8 @@ namespace CRUD_GROUP
             // previousKWHDataGridViewTextBoxColumn
             // 
             this.previousKWHDataGridViewTextBoxColumn.DataPropertyName = "PreviousKWH";
-            dataGridViewCellStyle88.NullValue = "+";
-            this.previousKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle88;
+            dataGridViewCellStyle16.NullValue = "+";
+            this.previousKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle16;
             this.previousKWHDataGridViewTextBoxColumn.HeaderText = "Previous kWh";
             this.previousKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.previousKWHDataGridViewTextBoxColumn.Name = "previousKWHDataGridViewTextBoxColumn";
@@ -490,8 +491,8 @@ namespace CRUD_GROUP
             // currentKWHDataGridViewTextBoxColumn
             // 
             this.currentKWHDataGridViewTextBoxColumn.DataPropertyName = "CurrentKWH";
-            dataGridViewCellStyle89.NullValue = "+";
-            this.currentKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle89;
+            dataGridViewCellStyle17.NullValue = "+";
+            this.currentKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle17;
             this.currentKWHDataGridViewTextBoxColumn.HeaderText = "Current kWh";
             this.currentKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.currentKWHDataGridViewTextBoxColumn.Name = "currentKWHDataGridViewTextBoxColumn";
@@ -501,9 +502,9 @@ namespace CRUD_GROUP
             // ratePerKWHDataGridViewTextBoxColumn
             // 
             this.ratePerKWHDataGridViewTextBoxColumn.DataPropertyName = "RatePerKWH";
-            dataGridViewCellStyle90.Format = "C2";
-            dataGridViewCellStyle90.NullValue = "+";
-            this.ratePerKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle90;
+            dataGridViewCellStyle18.Format = "C2";
+            dataGridViewCellStyle18.NullValue = "+";
+            this.ratePerKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle18;
             this.ratePerKWHDataGridViewTextBoxColumn.HeaderText = "Price Rate per kWh";
             this.ratePerKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.ratePerKWHDataGridViewTextBoxColumn.Name = "ratePerKWHDataGridViewTextBoxColumn";
@@ -513,9 +514,9 @@ namespace CRUD_GROUP
             // priceDataGridViewTextBoxColumn
             // 
             this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            dataGridViewCellStyle91.Format = "C2";
-            dataGridViewCellStyle91.NullValue = "+";
-            this.priceDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle91;
+            dataGridViewCellStyle19.Format = "C2";
+            dataGridViewCellStyle19.NullValue = "+";
+            this.priceDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle19;
             this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
             this.priceDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
@@ -525,8 +526,8 @@ namespace CRUD_GROUP
             // receiptNoDataGridViewTextBoxColumn
             // 
             this.receiptNoDataGridViewTextBoxColumn.DataPropertyName = "ReceiptNo";
-            dataGridViewCellStyle92.NullValue = "+";
-            this.receiptNoDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle92;
+            dataGridViewCellStyle20.NullValue = "+";
+            this.receiptNoDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle20;
             this.receiptNoDataGridViewTextBoxColumn.HeaderText = "Receipt #";
             this.receiptNoDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.receiptNoDataGridViewTextBoxColumn.Name = "receiptNoDataGridViewTextBoxColumn";
@@ -536,40 +537,43 @@ namespace CRUD_GROUP
             // Paid
             // 
             this.Paid.DataPropertyName = "Paid";
-            dataGridViewCellStyle93.NullValue = "+";
-            this.Paid.DefaultCellStyle = dataGridViewCellStyle93;
+            dataGridViewCellStyle21.NullValue = "+";
+            this.Paid.DefaultCellStyle = dataGridViewCellStyle21;
             this.Paid.HeaderText = "Is it paid?";
+            this.Paid.MinimumWidth = 6;
             this.Paid.Name = "Paid";
             this.Paid.ReadOnly = true;
+            this.Paid.Width = 125;
             // 
             // DateCreated
             // 
             this.DateCreated.DataPropertyName = "DateCreated";
-            dataGridViewCellStyle94.Format = "D";
-            dataGridViewCellStyle94.NullValue = "n.d.";
-            this.DateCreated.DefaultCellStyle = dataGridViewCellStyle94;
+            dataGridViewCellStyle22.Format = "D";
+            dataGridViewCellStyle22.NullValue = "n.d.";
+            this.DateCreated.DefaultCellStyle = dataGridViewCellStyle22;
             this.DateCreated.HeaderText = "Date";
+            this.DateCreated.MinimumWidth = 6;
             this.DateCreated.Name = "DateCreated";
             this.DateCreated.ReadOnly = true;
             this.DateCreated.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.DateCreated.Width = 222;
             // 
-            // recordTableBindingSource2
+            // recordTableBindingSource3
             // 
-            this.recordTableBindingSource2.DataMember = "RecordTable";
-            this.recordTableBindingSource2.DataSource = this.recordList;
+            this.recordTableBindingSource3.DataMember = "RecordTable";
+            this.recordTableBindingSource3.DataSource = this.recordsDataSet2;
             // 
-            // recordList
+            // recordsDataSet2
             // 
-            this.recordList.DataSetName = "RecordList";
-            this.recordList.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.recordsDataSet2.DataSetName = "RecordsDataSet2";
+            this.recordsDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(9, 7);
-            this.AddButton.Margin = new System.Windows.Forms.Padding(2);
+            this.AddButton.Location = new System.Drawing.Point(12, 9);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(256, 36);
+            this.AddButton.Size = new System.Drawing.Size(341, 44);
             this.AddButton.TabIndex = 1;
             this.AddButton.Text = "Add/Edit...";
             this.AddButton.UseVisualStyleBackColor = true;
@@ -582,11 +586,11 @@ namespace CRUD_GROUP
             this.Tab2.Controls.Add(this.PrintButton);
             this.Tab2.Controls.Add(this.SaveCSVRecord);
             this.Tab2.Controls.Add(this.SavePNGButton);
-            this.Tab2.Location = new System.Drawing.Point(4, 22);
-            this.Tab2.Margin = new System.Windows.Forms.Padding(2);
+            this.Tab2.Location = new System.Drawing.Point(4, 25);
+            this.Tab2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Tab2.Name = "Tab2";
-            this.Tab2.Padding = new System.Windows.Forms.Padding(2);
-            this.Tab2.Size = new System.Drawing.Size(954, 326);
+            this.Tab2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Tab2.Size = new System.Drawing.Size(1275, 404);
             this.Tab2.TabIndex = 1;
             this.Tab2.Text = "Graph";
             this.Tab2.UseVisualStyleBackColor = true;
@@ -595,9 +599,10 @@ namespace CRUD_GROUP
             // 
             this.GraphInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.GraphInfo.AutoSize = true;
-            this.GraphInfo.Location = new System.Drawing.Point(252, 232);
+            this.GraphInfo.Location = new System.Drawing.Point(336, 286);
+            this.GraphInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.GraphInfo.Name = "GraphInfo";
-            this.GraphInfo.Size = new System.Drawing.Size(205, 26);
+            this.GraphInfo.Size = new System.Drawing.Size(254, 32);
             this.GraphInfo.TabIndex = 5;
             this.GraphInfo.Text = "Details:\r\nClick on the graph points to see its details.";
             // 
@@ -608,19 +613,21 @@ namespace CRUD_GROUP
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GraphTabControl.Controls.Add(this.PriceTrendPerKWH);
             this.GraphTabControl.Controls.Add(this.RateTrend);
-            this.GraphTabControl.Location = new System.Drawing.Point(5, 5);
+            this.GraphTabControl.Location = new System.Drawing.Point(7, 6);
+            this.GraphTabControl.Margin = new System.Windows.Forms.Padding(4);
             this.GraphTabControl.Name = "GraphTabControl";
             this.GraphTabControl.SelectedIndex = 0;
-            this.GraphTabControl.Size = new System.Drawing.Size(946, 222);
+            this.GraphTabControl.Size = new System.Drawing.Size(1261, 273);
             this.GraphTabControl.TabIndex = 4;
             // 
             // PriceTrendPerKWH
             // 
             this.PriceTrendPerKWH.Controls.Add(this.picGraph);
-            this.PriceTrendPerKWH.Location = new System.Drawing.Point(4, 22);
+            this.PriceTrendPerKWH.Location = new System.Drawing.Point(4, 25);
+            this.PriceTrendPerKWH.Margin = new System.Windows.Forms.Padding(4);
             this.PriceTrendPerKWH.Name = "PriceTrendPerKWH";
-            this.PriceTrendPerKWH.Padding = new System.Windows.Forms.Padding(3);
-            this.PriceTrendPerKWH.Size = new System.Drawing.Size(938, 196);
+            this.PriceTrendPerKWH.Padding = new System.Windows.Forms.Padding(4);
+            this.PriceTrendPerKWH.Size = new System.Drawing.Size(1253, 244);
             this.PriceTrendPerKWH.TabIndex = 0;
             this.PriceTrendPerKWH.Text = "Price";
             this.PriceTrendPerKWH.UseVisualStyleBackColor = true;
@@ -632,10 +639,10 @@ namespace CRUD_GROUP
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picGraph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.picGraph.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.picGraph.Location = new System.Drawing.Point(5, 5);
-            this.picGraph.Margin = new System.Windows.Forms.Padding(2);
+            this.picGraph.Location = new System.Drawing.Point(7, 6);
+            this.picGraph.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.picGraph.Name = "picGraph";
-            this.picGraph.Size = new System.Drawing.Size(928, 186);
+            this.picGraph.Size = new System.Drawing.Size(1236, 224);
             this.picGraph.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picGraph.TabIndex = 0;
             this.picGraph.TabStop = false;
@@ -646,10 +653,11 @@ namespace CRUD_GROUP
             // RateTrend
             // 
             this.RateTrend.Controls.Add(this.picGraphPricePerKwh);
-            this.RateTrend.Location = new System.Drawing.Point(4, 22);
+            this.RateTrend.Location = new System.Drawing.Point(4, 25);
+            this.RateTrend.Margin = new System.Windows.Forms.Padding(4);
             this.RateTrend.Name = "RateTrend";
-            this.RateTrend.Padding = new System.Windows.Forms.Padding(3);
-            this.RateTrend.Size = new System.Drawing.Size(938, 196);
+            this.RateTrend.Padding = new System.Windows.Forms.Padding(4);
+            this.RateTrend.Size = new System.Drawing.Size(1253, 244);
             this.RateTrend.TabIndex = 1;
             this.RateTrend.Text = "Rate/kWh";
             this.RateTrend.UseVisualStyleBackColor = true;
@@ -661,10 +669,10 @@ namespace CRUD_GROUP
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picGraphPricePerKwh.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.picGraphPricePerKwh.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.picGraphPricePerKwh.Location = new System.Drawing.Point(5, 5);
-            this.picGraphPricePerKwh.Margin = new System.Windows.Forms.Padding(2);
+            this.picGraphPricePerKwh.Location = new System.Drawing.Point(7, 6);
+            this.picGraphPricePerKwh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.picGraphPricePerKwh.Name = "picGraphPricePerKwh";
-            this.picGraphPricePerKwh.Size = new System.Drawing.Size(928, 186);
+            this.picGraphPricePerKwh.Size = new System.Drawing.Size(1236, 224);
             this.picGraphPricePerKwh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picGraphPricePerKwh.TabIndex = 1;
             this.picGraphPricePerKwh.TabStop = false;
@@ -676,10 +684,10 @@ namespace CRUD_GROUP
             // 
             this.PrintButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PrintButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PrintButton.Location = new System.Drawing.Point(162, 232);
-            this.PrintButton.Margin = new System.Windows.Forms.Padding(2);
+            this.PrintButton.Location = new System.Drawing.Point(216, 286);
+            this.PrintButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PrintButton.Name = "PrintButton";
-            this.PrintButton.Size = new System.Drawing.Size(57, 33);
+            this.PrintButton.Size = new System.Drawing.Size(76, 41);
             this.PrintButton.TabIndex = 3;
             this.PrintButton.Text = "Print...";
             this.PrintButton.UseVisualStyleBackColor = true;
@@ -689,10 +697,10 @@ namespace CRUD_GROUP
             // 
             this.SaveCSVRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SaveCSVRecord.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.SaveCSVRecord.Location = new System.Drawing.Point(14, 270);
-            this.SaveCSVRecord.Margin = new System.Windows.Forms.Padding(2);
+            this.SaveCSVRecord.Location = new System.Drawing.Point(19, 332);
+            this.SaveCSVRecord.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SaveCSVRecord.Name = "SaveCSVRecord";
-            this.SaveCSVRecord.Size = new System.Drawing.Size(144, 33);
+            this.SaveCSVRecord.Size = new System.Drawing.Size(192, 41);
             this.SaveCSVRecord.TabIndex = 2;
             this.SaveCSVRecord.Text = "Save as CSV...";
             this.SaveCSVRecord.UseVisualStyleBackColor = true;
@@ -702,14 +710,24 @@ namespace CRUD_GROUP
             // 
             this.SavePNGButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SavePNGButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.SavePNGButton.Location = new System.Drawing.Point(14, 232);
-            this.SavePNGButton.Margin = new System.Windows.Forms.Padding(2);
+            this.SavePNGButton.Location = new System.Drawing.Point(19, 286);
+            this.SavePNGButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SavePNGButton.Name = "SavePNGButton";
-            this.SavePNGButton.Size = new System.Drawing.Size(144, 33);
+            this.SavePNGButton.Size = new System.Drawing.Size(192, 41);
             this.SavePNGButton.TabIndex = 1;
             this.SavePNGButton.Text = "Save as PNG...";
             this.SavePNGButton.UseVisualStyleBackColor = true;
             this.SavePNGButton.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // recordTableBindingSource2
+            // 
+            this.recordTableBindingSource2.DataMember = "RecordTable";
+            this.recordTableBindingSource2.DataSource = this.recordList;
+            // 
+            // recordList
+            // 
+            this.recordList.DataSetName = "RecordList";
+            this.recordList.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // recordTableBindingSource1
             // 
@@ -742,8 +760,8 @@ namespace CRUD_GROUP
             this.searchToolStripMenuItem});
             this.strMain.Location = new System.Drawing.Point(0, 0);
             this.strMain.Name = "strMain";
-            this.strMain.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.strMain.Size = new System.Drawing.Size(980, 27);
+            this.strMain.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.strMain.Size = new System.Drawing.Size(1307, 32);
             this.strMain.TabIndex = 1;
             this.strMain.Text = "MainMenuStrip";
             this.strMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -755,7 +773,7 @@ namespace CRUD_GROUP
             this.toolStripSeparator2,
             this.exitAltF4ToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 23);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 28);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // accountInformationToolStripMenuItem
@@ -765,38 +783,38 @@ namespace CRUD_GROUP
             this.toolStripSeparator1,
             this.logOutToolStripMenuItem});
             this.accountInformationToolStripMenuItem.Name = "accountInformationToolStripMenuItem";
-            this.accountInformationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.accountInformationToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
             this.accountInformationToolStripMenuItem.Text = "Account";
             this.accountInformationToolStripMenuItem.Click += new System.EventHandler(this.accountInformationToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
             this.infoToolStripMenuItem.Text = "New Account...";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(167, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(186, 6);
             // 
             // logOutToolStripMenuItem
             // 
             this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
             this.logOutToolStripMenuItem.Text = "Log out";
             this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(135, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(171, 6);
             // 
             // exitAltF4ToolStripMenuItem
             // 
             this.exitAltF4ToolStripMenuItem.Name = "exitAltF4ToolStripMenuItem";
-            this.exitAltF4ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitAltF4ToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
             this.exitAltF4ToolStripMenuItem.Text = "Exit (Alt+F4)";
             this.exitAltF4ToolStripMenuItem.Click += new System.EventHandler(this.exitAltF4ToolStripMenuItem_Click);
             // 
@@ -806,20 +824,20 @@ namespace CRUD_GROUP
             this.refreshToolStripMenuItem,
             this.saveAsToolStripMenuItem});
             this.graphToolStripMenuItem.Name = "graphToolStripMenuItem";
-            this.graphToolStripMenuItem.Size = new System.Drawing.Size(51, 23);
+            this.graphToolStripMenuItem.Size = new System.Drawing.Size(63, 28);
             this.graphToolStripMenuItem.Text = "Graph";
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(150, 26);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(150, 26);
             this.saveAsToolStripMenuItem.Text = "Save as...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -829,13 +847,13 @@ namespace CRUD_GROUP
             this.SearchComboBox.Items.AddRange(new object[] {
             "All"});
             this.SearchComboBox.Name = "SearchComboBox";
-            this.SearchComboBox.Size = new System.Drawing.Size(92, 23);
+            this.SearchComboBox.Size = new System.Drawing.Size(121, 28);
             this.SearchComboBox.Click += new System.EventHandler(this.SearchComboBox_Click);
             // 
             // searchToolStripMenuItem
             // 
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(54, 23);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(67, 28);
             this.searchToolStripMenuItem.Text = "Search";
             this.searchToolStripMenuItem.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
             // 
@@ -845,11 +863,10 @@ namespace CRUD_GROUP
             this.UserLabel.AutoSize = true;
             this.UserLabel.BackColor = System.Drawing.Color.SkyBlue;
             this.UserLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UserLabel.Location = new System.Drawing.Point(556, 0);
-            this.UserLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.UserLabel.Location = new System.Drawing.Point(749, 0);
             this.UserLabel.Name = "UserLabel";
             this.UserLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.UserLabel.Size = new System.Drawing.Size(100, 15);
+            this.UserLabel.Size = new System.Drawing.Size(125, 20);
             this.UserLabel.TabIndex = 3;
             this.UserLabel.Text = "admin@localhost";
             this.UserLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -869,27 +886,32 @@ namespace CRUD_GROUP
             this.flowLayoutPanel1.BackColor = System.Drawing.Color.SkyBlue;
             this.flowLayoutPanel1.Controls.Add(this.UserLabel);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(313, 6);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(417, 7);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(658, 14);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(877, 17);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // recordTableTableAdapter2
             // 
             this.recordTableTableAdapter2.ClearBeforeFill = true;
             // 
+            // recordTableTableAdapter3
+            // 
+            this.recordTableTableAdapter3.ClearBeforeFill = true;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(980, 409);
+            this.ClientSize = new System.Drawing.Size(1307, 503);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.MainControl);
             this.Controls.Add(this.strMain);
             this.MainMenuStrip = this.strMain;
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(996, 448);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MinimumSize = new System.Drawing.Size(1322, 541);
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -902,8 +924,8 @@ namespace CRUD_GROUP
             this.FieldsPanel.ResumeLayout(false);
             this.FieldsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecords)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet2)).EndInit();
             this.Tab2.ResumeLayout(false);
             this.Tab2.PerformLayout();
             this.GraphTabControl.ResumeLayout(false);
@@ -911,6 +933,8 @@ namespace CRUD_GROUP
             ((System.ComponentModel.ISupportInitialize)(this.picGraph)).EndInit();
             this.RateTrend.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picGraphPricePerKwh)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordsDataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordTableBindingSource)).EndInit();
@@ -992,6 +1016,9 @@ namespace CRUD_GROUP
         private DataGridViewTextBoxColumn Paid;
         private DataGridViewTextBoxColumn DateCreated;
         private Label GraphInfo;
+        private RecordsDataSet2 recordsDataSet2;
+        private BindingSource recordTableBindingSource3;
+        private RecordsDataSet2TableAdapters.RecordTableTableAdapter recordTableTableAdapter3;
     }
 }
 

@@ -19,7 +19,7 @@ namespace CRUD_GROUP
 
         public DatabaseWorker()
         { // Paste the connection string here. Be sure to include double quotation marks (")!
-            conStr = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Kersti\\source\\repos\\CRUD_GROUP\\CRUD_GROUP\\Records.mdf;Integrated Security=True";
+            conStr = "Data Source=localhost,1433;Initial Catalog=Records;Persist Security Info=True;User ID=sa;Password=jer0me-LL()YD;Encrypt=False";
             sqlCon = new SqlConnection(conStr);
             sqlCon.Open();
         }

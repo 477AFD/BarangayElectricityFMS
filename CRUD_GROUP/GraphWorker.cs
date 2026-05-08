@@ -156,10 +156,10 @@ namespace GraphingTests
 
         public int ClickedIndex { get; private set; } = -1;
 
-        public void DrawLineExt(PictureBox canvas, int index, Color color, Point? res = null, int GraphIntervalX = 10, int GraphIntervalY = 100, bool isSnapshot = false, Point? click = null, bool doubleClick = false)
+        public void DrawLineExt(PictureBox canvas, int index, Color color, Point? res = null, int GraphIntervalX = 10, int GraphIntervalY = 100, bool isSnapshot = false, Point? click = null, bool doubleClick = false, bool isPrint = false)
         {
             Point r = res ?? new Point(canvas.Width, canvas.Height);
-            canvas.Image = (!isSnapshot) ? new Bitmap(r.X, r.Y) : new Bitmap(7680, 4320);
+            canvas.Image = (isPrint) ? new Bitmap(1920, 1080) : (!isSnapshot) ? new Bitmap(r.X, r.Y) : new Bitmap(7680, 4320);
              
             using (Graphics g = Graphics.FromImage(canvas.Image))
             {
@@ -168,8 +168,8 @@ namespace GraphingTests
                 g.Clear(Color.White);
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                int marginLeft = (isSnapshot) ? 233 : 50;
-                int marginOther = (isSnapshot) ? 15 : 10;
+                int marginLeft = (isPrint) ? 120 : (isSnapshot) ? 233 : 50;
+                int marginOther = (isPrint) ? 20 : (isSnapshot) ? 15 : 10;
                 int drawWidth = canvas.Image.Width - marginLeft - marginOther;
                 int drawHeight = canvas.Image.Height - (marginOther * 2);
                 decimal min = run.Min();
@@ -177,7 +177,7 @@ namespace GraphingTests
                 decimal range = (max - min == 0) ? 1 : (max - min);
                 Pen gray = (!isSnapshot) ? new Pen(Color.FromArgb(220, 220, 220), 1f) : new Pen(Color.FromArgb(220, 220, 220), 4f);
                 Pen linePen = (!isSnapshot) ? new Pen(color, 2f) : new Pen(color, 10f);
-                Font labelFont = (!isSnapshot) ? new Font("Bahnschrift", 7f) : new Font("Arial", 35f);
+                Font labelFont = (isPrint) ? new Font("Arial", 20f, FontStyle.Bold) : (!isSnapshot) ? new Font("Bahnschrift", 7f) :  new Font("Arial", 35f);
                 Brush labelBrush = Brushes.Gray;
                 decimal startVal = Math.Floor(min / GraphIntervalY) * GraphIntervalY;
 

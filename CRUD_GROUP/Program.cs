@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 using System.Windows.Forms;
 
 namespace CRUD_GROUP
@@ -18,9 +20,18 @@ namespace CRUD_GROUP
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //string json = File.ReadAllText(".\\system.Zelda");
+            //SystemProperties prop = 
             fLog = new Login();
             fSignUpForm = new SignUpForm();
             Application.Run(fLog);
         }
+    }
+
+    public sealed class SystemProperties
+    {
+        public string Host {  get; set; }
+        public string Password { get; set; }
+        public string Username { get; set; }
     }
 }

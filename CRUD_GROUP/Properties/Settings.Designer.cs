@@ -33,5 +33,16 @@ namespace CRUD_GROUP.Properties {
                 return ((string)(this["RecordsConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=localhost,1433;Initial Catalog=Records;Persist Security Info=True;Use" +
+            "r ID=sa;Password=jer0me-LL()YD;Encrypt=False;TrustServerCertificate=True")]
+        public string RecordWire {
+            get {
+                return ((string)(this["RecordWire"]));
+            }
+        }
     }
 }

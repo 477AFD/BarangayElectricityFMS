@@ -16,40 +16,63 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Data.Common;
 
 namespace CRUD_GROUP
 {
     public partial class MainForm : Form
     {
+        // Default (root) account
         KeyValuePair<string, string> adminAccount = new KeyValuePair<string, string>("admin", "TLoZ_B0TW32");
+        // is admin
         readonly bool admin = false;
+        // Account log-in
         KeyValuePair<string, string> account;
+        // Database Worker
         readonly DatabaseWorker db;
         public MainForm(KeyValuePair<string, string> accountName)
         {
             InitializeComponent();
+            // Hire a new database worker
             db = new DatabaseWorker();
+            // Disable fields input by default (since it only shows when a user clicks Add/Edit)
             FieldsPanel.Enabled = false;
             FieldsPanel.Visible = false;
+            // If it is a root
             if (accountName.Key == adminAccount.Key && accountName.Value == adminAccount.Value)
             {
                 account = new KeyValuePair<string, string>(accountName.Key, accountName.Value);
                 admin = true;
                 UserLabel.Text = "Administrator";
             }
-            else try
+            else try // If it is not a root account
                 {
+                    // Check if a user exists
+                    DataTable re = db.ExecuteQuery("SELECT Username FROM AccountTBL");
+                    bool tr = false;
+                    foreach (DataRow dr in re.Rows)
+                    {
+                        if (dr["Username"].ToString() == accountName.Key)
+                        {
+                            tr = true;
+                            break;
+                        }
+                    }
+                    if (!tr) throw new AccessViolationException("SYS:0014"); // SYS:0014 is the error code for Incorrect username or password, if the user does not exist
                     DataTable accountInfo = db.ExecuteQuery($"SELECT * FROM AccountTBL WHERE Username='{accountName.Key}'");
                     if (accountInfo != null)
                     {
                         Debug.WriteLine("Loading passwords");
                         string fpwd = accountInfo.Rows[0]["PasswordHash"].ToString();
                         string spwd = accountName.Value;
-                        if (fpwd != spwd) throw new AccessViolationException("SYS:0014");
+                        // Check password
+                        if (fpwd != spwd) throw new AccessViolationException("SYS:0014"); // SYS:0014 is the error code for Incorrect username or password
                         else
                         {
                             Debug.WriteLine("Installing account");
+                            // Install account to a KeyValuePair
                             account = new KeyValuePair<string, string>(accountName.Key, accountName.Value);
+                            // Check if it is an admin account
                             admin = int.Parse(accountInfo.Rows[0]["isAdmin"].ToString()) == 1;
                         }
                     }
@@ -206,12 +229,11 @@ namespace CRUD_GROUP
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'recordsDataSet2.RecordTable' table. You can move, or remove it, as needed.
+            this.recordTableTableAdapter3.Fill(this.recordsDataSet2.RecordTable);
             // TODO: This line of code loads data into the 'recordList.RecordTable' table. You can move, or remove it, as needed.
-            this.recordTableTableAdapter2.Fill(this.recordList.RecordTable);
             // TODO: This line of code loads data into the 'recordsDataSet1.RecordTable' table. You can move, or remove it, as needed.
-            this.recordTableTableAdapter1.Fill(this.recordsDataSet1.RecordTable);
             // TODO: This line of code loads data into the 'recordsDataSet.RecordTable' table. You can move, or remove it, as needed.
-            this.recordTableTableAdapter.Fill(this.recordsDataSet.RecordTable);
             Debug.WriteLine("Inserting data");
             DisplayData();
             if (!admin)
@@ -589,7 +611,22 @@ namespace CRUD_GROUP
 
         private void PrintButton_Click(object sender, EventArgs e)
         {
-
+            if (!admin)
+            {
+                p.DrawLineExt(picGraph, 1, Color.Blue, new Point(1920, 1080), 1, 250, false, null, false, true);
+                p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(1920, 1080), 1, 1, false, null, false, true);
+                Bitmap rt = (Bitmap)picGraph.Image;
+                Bitmap pt = (Bitmap)picGraphPricePerKwh.Image;
+                p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
+                p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraphPricePerKwh.Width, picGraphPricePerKwh.Height), 1, 1);
+                string uname = GetName();
+                string dname = "";
+                DataTable users = db.ExecuteQuery($"SELECT FullName FROM AccountTBL WHERE Username='{uname}'");
+                dname = users.Rows[0]["FullName"].ToString() ?? "Unknown Name";
+                DataTable tbl = db.ExecuteQuery($"SELECT PreviousKWH, CurrentKWH, RatePerKWH, Price, ReceiptNo, DateCreated FROM RecordTable WHERE CustomerName='{uname}' ORDER BY RecordTimeIndex ASC");
+                PrintWorker d = new PrintWorker(rt, pt, tbl, dname);
+                d.Print();
+            }
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
