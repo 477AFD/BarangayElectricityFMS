@@ -4,27 +4,20 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
-using System.Drawing.Printing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace GraphingTests
 {
     internal class GraphWorker
     {
+        #region Variables
         List<List<decimal>> listSets;
         List<int> indices;
+        #endregion
 
-        public Bitmap getGraph(PictureBox canvas)
-        {
-            return (Bitmap)canvas.Image;
-        }
-
+        #region Graph Worker maker
         public static GraphWorker MakeGraphWorker(DataTable dt) // For use in the project
         {
             List<List<decimal>> f = new List<List<decimal>>();
@@ -39,6 +32,9 @@ namespace GraphingTests
             f.Add(price);
             return new GraphWorker(f);
         }
+        #endregion
+
+        #region Constructor
         /// <summary>
         /// Creates a graph worker for drawing 2D graphs.
         /// </summary>
@@ -93,69 +89,35 @@ namespace GraphingTests
                 Debug.WriteLine($"Count {ii}: {d.Count} :> {r}");
             }
         }
+        #endregion
 
-        public int MarginX { get; set; } = 10;
-        public int MarginY { get; set; } = 10;
+        #region Properties
         /// <summary>
-        /// Creates a single line graph.
+        /// This read-only property represents the index in which a bar in a bar graph or point in a line graph is clicked.
         /// </summary>
-        /// <param name="canvas">The form canvas to use.</param>
-        /// <param name="index"></param>
-        public void DrawLine(PictureBox canvas, int index, Color color, Point? res = null, int GraphIntervalX = 10, int GraphIntervalY = 100)
-        {
-            Point r;
-            if (res == null) r = new Point(canvas.Width, canvas.Height);
-            else r = (Point)res;
-            canvas.Image = new Bitmap(r.X, r.Y);
-            using (Graphics g = Graphics.FromImage(canvas.Image))
-            {
-                List<decimal> run = listSets[index];
-                g.Clear(Color.White);
-                int lat = canvas.Image.Width / run.Count; // For width
-                int lgt = (int)Math.Round(run.Max(), 0);
-                int lgtmin = (int)Math.Round(run.Min(), 0);
-                decimal min = run.Min() - 2;
-                decimal max = run.Max() + 2;
-                decimal cmax = canvas.Image.Height - 2;
-                const decimal cmin = -2;
-                //int x = 0;
-                Pen t = new Pen(color, 2f);
-                int ii = 0;
-                int s = 0, p = 0;
-                decimal lastDouble = 0.0M;
-                Debug.WriteLine($"{canvas.Image.Width} {canvas.Image.Height} :: {lat} {lgt}");
-                Pen gray = new Pen(Color.FromArgb(200, 200, 200));
-                for (decimal ip = min; ip < max; ip += GraphIntervalY)
-                {
-                    int ptr = ((int)((ip - min) * (cmax - cmin) / (max - min))) + (int)cmin;
-                    g.DrawLine(gray, 2, ptr, canvas.Image.Width - 2, ptr);
-                }
-                for (int ip = 0; ip < canvas.Image.Width; ip += GraphIntervalX)
-                {
-                    int ptr = lat * ip;
-                    g.DrawLine(gray, ptr, 2, ptr, canvas.Image.Height - 2);
-                }
-                foreach (decimal value in run)
-                {
-                    if (ii++ != 0 && indices[index] > ii)
-                    {
-
-                        Point prev = new Point(p, canvas.Image.Height - ((int)((lastDouble - min) * (cmax - cmin) / (max - min))) + (int)cmin);
-                        Point next = new Point(s, canvas.Image.Height - ((int)((value - min) * (cmax - cmin) / (max - min))) + (int)cmin);
-                        p += lat;
-                        Debug.WriteLine($"Point {ii - 1}: [{prev.X} {prev.Y}] .. [{next.X} {next.Y}]");
-                        g.DrawLine(t, prev, next);
-                        
-                    }
-                    s += lat;
-                    lastDouble = value;
-                }
-                g.Flush();
-            }
-        }
-
         public int ClickedIndex { get; private set; } = -1;
+        /// <summary>
+        /// Sets the type of graph.<br />
+        /// Less than or equal to 1 = bar graph<br />
+        /// 2 or higher = line graph
+        /// </summary>
+        public int GraphType { get; set; } = 1;
+        #endregion
 
+        #region Graph compositor
+        /// <summary>
+        /// Draws a line graph or a bar graph.
+        /// </summary>
+        /// <param name="canvas">The canvas target to use.</param>
+        /// <param name="index">The graph index to use.</param>
+        /// <param name="color">The color to use as a foreground color for the rectangle or line.</param>
+        /// <param name="res">The screen resolution to use. Currently uses a Point class.</param>
+        /// <param name="GraphIntervalX">The graph interval width to use. Default is 10. Changing it is not recommended.</param>
+        /// <param name="GraphIntervalY">The graph interval per height to use. Currently deprecated, and it was replaced by a built-in automated interval selector.</param>
+        /// <param name="isSnapshot">This indicates if it is a snapshot. If true, it renders at 8K (7680x4320) resolution. Enabling print mode overrides this setting.</param>
+        /// <param name="click">This indicates which point on the graph is clicked.</param>
+        /// <param name="doubleClick">This indicates if it was double clicked. Currently provides no functionality.</param>
+        /// <param name="isPrint">This indicates if it is used in printing. If true, it renders in paper mode at 1080p.</param>
         public void DrawLineExt(PictureBox canvas, int index, Color color, Point? res = null, int GraphIntervalX = 10, int GraphIntervalY = 100, bool isSnapshot = false, Point? click = null, bool doubleClick = false, bool isPrint = false)
         {
             Point r = res ?? new Point(canvas.Width, canvas.Height);
@@ -165,22 +127,40 @@ namespace GraphingTests
             {
                 List<decimal> run = listSets[index];
                 if (run.Count < 2) return;
-                g.Clear(Color.White);
+                if (!isPrint) g.Clear(Color.FromArgb(32,50,32));
+                else g.Clear(Color.White);
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                 int marginLeft = (isPrint) ? 120 : (isSnapshot) ? 233 : 50;
                 int marginOther = (isPrint) ? 20 : (isSnapshot) ? 15 : 10;
                 int drawWidth = canvas.Image.Width - marginLeft - marginOther;
                 int drawHeight = canvas.Image.Height - (marginOther * 2);
-                decimal min = run.Min();
+                decimal x = run.Max();
+                // Get suitable interval depending on the largest item in a list
+                if (x < 100) GraphIntervalY = 1;
+                else if (x >= 100 && x < 250) GraphIntervalY = 5;
+                else if (x >= 250 && x < 500) GraphIntervalY = 10;
+                else if (x >= 500 && x < 1000) GraphIntervalY = 50;
+                else if (x >= 1000 && x < 5000) GraphIntervalY = 250;
+                else if (x >= 5000 && x < 10000) GraphIntervalY = 500;
+                else if (x >= 10000 && x < 15000) GraphIntervalY = 1000;
+                else if (x >= 15000 && x < 30000) GraphIntervalY = 2500;
+                else if (x >= 30000 && x < 50000) GraphIntervalY = 5000;
+                else if (x >= 50000 && x < 100000) GraphIntervalY = 10000;
+                else GraphIntervalY = 25000;
+                decimal min = (GraphType >= 2) ? run.Min() : run.Min() - GraphIntervalY;
                 decimal max = run.Max();
                 decimal range = (max - min == 0) ? 1 : (max - min);
-                Pen gray = (!isSnapshot) ? new Pen(Color.FromArgb(220, 220, 220), 1f) : new Pen(Color.FromArgb(220, 220, 220), 4f);
+                Color dfcolor = (isPrint) ? Color.FromArgb(220, 220, 220) : Color.FromArgb(0, 0, 0);
+                Pen gray = (!isSnapshot) ? new Pen(dfcolor, 1f) : new Pen(dfcolor, 4f);
                 Pen linePen = (!isSnapshot) ? new Pen(color, 2f) : new Pen(color, 10f);
                 Font labelFont = (isPrint) ? new Font("Arial", 20f, FontStyle.Bold) : (!isSnapshot) ? new Font("Bahnschrift", 7f) :  new Font("Arial", 35f);
-                Brush labelBrush = Brushes.Gray;
+                Brush labelBrush = (isPrint) ? Brushes.DarkGray : Brushes.White;
+                Pen lightPen = new Pen(Color.FromArgb(192, 255, 255, 255));
+                Pen darkPen = new Pen(Color.FromArgb(192, 0, 0, 0));
                 decimal startVal = Math.Floor(min / GraphIntervalY) * GraphIntervalY;
-
+                SolidBrush barPen = new SolidBrush(color);
+                // Draw horizontal gridlines and units per line
                 for (decimal val = startVal; val <= max + GraphIntervalY; val += GraphIntervalY)
                 {
                     float yPos = (float)(marginOther + drawHeight - (((val - min) / range) * drawHeight));
@@ -193,25 +173,50 @@ namespace GraphingTests
                         g.DrawString(label, labelFont, labelBrush, marginLeft - textSize.Width - 5, yPos - (textSize.Height / 2));
                     }
                 }
-                float xStep = (float)drawWidth / (run.Count - 1);
-                for (int i = 0; i < run.Count; i += GraphIntervalX)
+                int count = (GraphType < 2) ? run.Count : run.Count - 1;
+                int pcount = (GraphType < 2) ? run.Count + 1 : run.Count;
+                float xStep = (float)drawWidth / (count);
+                // Draw vertical lines in intervals of list count (run.Count)
+                for (int i = 0; i < pcount; i += GraphIntervalX)
                 {
                     float xPos = marginLeft + (i * xStep);
                     g.DrawLine(gray, xPos, marginOther, xPos, canvas.Image.Height - marginOther);
                 }
                 List<KeyValuePair<Point, int>> ptrs = new List<KeyValuePair<Point, int>>(); // Stores the point and its index
-                for (int i = 0; i < run.Count - 1; ++i)
+                // Draw graph
+                for (int i = 0; i < count; ++i)
                 {
                     float x1 = marginLeft + (i * xStep);
                     float y1 = (float)(marginOther + drawHeight - (((run[i] - min) / range) * drawHeight));
                     float x2 = marginLeft + ((i + 1) * xStep);
-                    float y2 = (float)(marginOther + drawHeight - (((run[i + 1] - min) / range) * drawHeight));
+                    float y2 = 0;
+                    if (GraphType >= 2) y2 = (float)(marginOther + drawHeight - (((run[i + 1] - min) / range) * drawHeight));
                     if (i == 0) ptrs.Add(new KeyValuePair<Point, int>(new Point((int)x1, (int)y1), i));
                     ptrs.Add(new KeyValuePair<Point, int>(new Point((int)x2, (int)y2), i + 1));
-                    g.DrawLine(linePen, x1, y1, x2, y2);
+                    if (GraphType >= 2)
+                    {
+                        // x1, y1 = previous point
+                        // x2, y2 = next point
+                        g.DrawLine(linePen, x1, y1, x2, y2);
+                        if (i == 0) ptrs.Add(new KeyValuePair<Point, int>(new Point((int)x1, (int)y1), i));
+                        ptrs.Add(new KeyValuePair<Point, int>(new Point((int)x2, (int)y2), i + 1));
+                    } else
+                    {
+                        Rectangle rectangle = new Rectangle((int)x1 + 1, (int)y1 + 1, (int)(x2-x1) - 1, (int)(drawHeight - y1 + marginOther) - 1);
+                        Point shine = new Point((int)x1 + 1, (int)y1 + 1);
+                        Point shineX = new Point((int)x2 - 1, (int)y1 + 1);
+                        Point shineY = new Point((int)x1 + 1, canvas.Image.Height - marginOther);
+                        Point shineNeg = new Point((int)x2 - 1, canvas.Image.Height - marginOther);
+                        g.FillRectangle(barPen, rectangle);
+                        g.DrawLine(lightPen, shine, shineX);
+                        g.DrawLine(lightPen, shine, shineY);
+                        g.DrawLine(darkPen, shineNeg, shineX);
+                        g.DrawLine(darkPen, shineNeg, shineY);
+                        ptrs.Add(new KeyValuePair<Point, int>(new Point((int)((x2 + x1) / 2), (int)y1), i));
+                    }
                 }
                 Pen crosshair = new Pen(Color.FromArgb(77,0,0,0), 1.666667f);
-                Pen target = new Pen(Color.FromArgb(255, 0, 128, 0), 3f);
+                Pen target = new Pen(Color.FromArgb(255, 255, 255, 255), 3f);
                 // After this, render the lines in click (circle) and double-click (crosshair) when the image is clicked (like a touchscreen)
                 if (click != null)
                 {
@@ -252,154 +257,6 @@ namespace GraphingTests
                 g.Flush();
             }
         }
-        /// <summary>
-        /// Creates a line graph of all data in this class.
-        /// </summary>
-        /// <param name="canvas">The form canvas to use.</param>
-        public void DrawLine(PictureBox canvas, Point? res = null, int GraphIntervalX = 1, int GraphIntervalY = 100)
-        {
-            Point r;
-            if (res == null) r = new Point(canvas.Width, canvas.Height);
-            else r = (Point)res;
-            canvas.Image = new Bitmap(r.X, r.Y);
-            List<Color> colors = new List<Color>() { Color.Red, Color.Green, Color.Blue, Color.Magenta, Color.Cyan, Color.Yellow, Color.DarkGray, Color.Black, Color.Gray, };
-            using (Graphics g = Graphics.FromImage(canvas.Image))
-            {
-                g.Clear(Color.White);
-                List<decimal> allValues = new List<decimal>();
-                foreach (List<decimal> d in listSets)
-                    allValues.AddRange(d);
-                Debug.WriteLine($"List size: {listSets.Count}");
-                for (int i = 0, p = 0; i < listSets.Count; ++i, ++p)
-                {
-                    Debug.WriteLine($"List index: {i}");
-                    if (p == colors.Count) p = 0;
-                    List<decimal> run = listSets[i];
-                    int lat = (canvas.Image.Width) / (run.Count); // For width
-                    decimal min = allValues.Min() - 2;
-                    decimal max = allValues.Max() + 2;
-                    decimal cmax = canvas.Image.Height -2;
-                    const decimal cmin = -2;
-                    //int x = 0;
-                    Pen t = new Pen(colors[p], 2f);
-                    Debug.WriteLine($"{canvas.Image.Width} {canvas.Image.Height} :: {lat}");
-                    int ii = 0;
-                    int s = 0, w = 0;
-                    decimal lastDouble = 0.0M;
-
-                    Pen gray = new Pen(Color.FromArgb(200,200,200));
-                    for (decimal ip = min; ip < max; ip += GraphIntervalY)
-                    {
-                        int ptr = ((int)((ip - min) * ((cmax) - (cmin)) / ((max) - (min)))) + (int)cmin;
-                        Debug.WriteLine(ptr);
-                        g.DrawLine(gray, 2, ptr, canvas.Image.Width - 2, ptr);
-                    }
-                    for (int ip = 0; ip < canvas.Image.Width; ip += GraphIntervalX)
-                    {
-                        int ptr = lat * ip;
-                        g.DrawLine(gray, ptr, 2, ptr, canvas.Image.Height - 2);
-                    }
-                    int ptre = canvas.Image.Height;
-                    foreach (decimal value in run)
-                    {
-                        Debug.WriteLine($"Value: {value}");
-                        if (ii++ != 0 && indices[i] >= ii)
-                        {
-                            Point prev = new Point(w, ptre - ((int)((lastDouble - min) * (cmax - cmin) / (max - min))) + (int)cmin);
-                            Point next = new Point(s, ptre - ((int)((value - min) * (cmax - cmin) / (max - min))) + (int)cmin);
-                            w += lat;
-                            Debug.WriteLine($"Point {ii - 1}: [{prev.X} {prev.Y}] .. [{next.X} {next.Y}]");
-                            g.DrawLine(t, prev, next);
-                        }
-                        s += lat;
-                        lastDouble = value;
-                    }
-                }
-            }
-        }
-        public void DrawLineExt(PictureBox canvas, Point? res = null, int GraphIntervalX = 1, int GraphIntervalY = 100)
-        {
-            Point r = res ?? new Point(canvas.Width, canvas.Height);
-            canvas.Image = new Bitmap(r.X, r.Y);
-            List<Color> colors = new List<Color>() { Color.Red, Color.Green, Color.Blue, Color.Magenta, Color.Cyan, Color.Yellow, Color.DarkGray, Color.Black, Color.Gray };
-            using (Graphics g = Graphics.FromImage(canvas.Image))
-            {
-                g.Clear(Color.White);
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                const int margin = 6;
-                int drawWidth = canvas.Image.Width - (margin * 2);
-                int drawHeight = canvas.Image.Height - (margin * 2);
-                var allValues = listSets.SelectMany(x => x).ToList();
-                if (allValues.Count == 0) return;
-                decimal globalMin = allValues.Min();
-                decimal globalMax = allValues.Max();
-                decimal range = (globalMax - globalMin == 0) ? 1 : (globalMax - globalMin);
-                Pen gray = new Pen(Color.FromArgb(220, 220, 220), 1f);
-                for (decimal val = globalMin; val <= globalMax; val += GraphIntervalY)
-                {
-                    float yPos = (float)(margin + drawHeight - (((val - globalMin) / range) * drawHeight));
-                    g.DrawLine(gray, margin, yPos, canvas.Image.Width - margin, yPos);
-                }
-                for (int i = 0; i < listSets.Count; ++i)
-                {
-                    List<decimal> run = listSets[i];
-                    if (run.Count < 2) continue;
-                    Color lineColor = colors[i % colors.Count];
-                    Pen t = new Pen(lineColor, 2f);
-                    float xStep = (float)drawWidth / (run.Count - 1);
-
-                    for (int j = 0; j < run.Count - 1; j++)
-                    {
-                        float x1 = margin + (j * xStep);
-                        float y1 = (float)(margin + drawHeight - ((run[j] - globalMin) / range * drawHeight));
-                        float x2 = margin + ((j + 1) * xStep);
-                        float y2 = (float)(margin + drawHeight - ((run[j + 1] - globalMin) / range * drawHeight));
-                        g.DrawLine(t, x1, y1, x2, y2);
-                    }
-                }
-                g.Flush();
-            }
-        }
-
-        static double Map(double value, double fromSource, double toSource, double fromTarget, double toTarget)
-        {
-            return (value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget) + fromTarget;
-        }
-
-        //public void DrawBar(PictureBox canvas, Point? res = null, int width = 10, int spacing = 5)
-        //{
-        //    Point r;
-        //    if (res == null) r = new Point(canvas.Width, canvas.Height);
-        //    else r = (Point)res;
-        //    canvas.Image = new Bitmap(r.X, r.Y);
-        //    List<Color> colors = new List<Color>() { Color.Red, Color.Green, Color.Blue, Color.Magenta, Color.Cyan, Color.Yellow, Color.DarkGray, Color.Black, Color.Gray, };
-        //    using (Graphics g = Graphics.FromImage(canvas.Image))
-        //    {
-        //        g.Clear(Color.White);
-        //        List<double> allValues = new List<double>();
-        //        foreach (List<double> d in listSets) allValues.AddRange(d);
-        //        // Define actual width per box, starting from 0
-        //        int w = listSets.Count;
-        //        int h = width / w;
-        //        int e = 0;
-        //        int q = (width * w - w) + spacing;
-        //        for (int i = 0, p = 0; i < listSets.Count; i++, p++)
-        //        {
-        //            if (p == colors.Count) p = 0;
-        //            List<double> run = listSets[i];
-        //            int lat = canvas.Image.Width / run.Count; // For width
-        //            double min = allValues.Min() - 2;
-        //            double max = allValues.Max() + 2;
-        //            double cmax = canvas.Image.Height - 2;
-        //            const double cmin = 2;
-        //            //int x = 0;
-        //            Pen t = new Pen(colors[p]);
-        //            for (int s = 0; s < run.Count; s++)
-        //            {
-        //                g.DrawRectangle(t, new Rectangle(new Point(cmax, )))
-        //            }
-        //        }
-        //    }
-        //}
+        #endregion
     }
 }

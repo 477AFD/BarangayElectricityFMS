@@ -14,8 +14,8 @@ namespace CRUD_GROUP
         DataTable dTable;
         SqlDataAdapter sqlDA;
         SqlCommand sqlCmd;
-        SqlConnection sqlCon;
-        string conStr;
+        readonly SqlConnection sqlCon;
+        readonly string conStr;
 
         public DatabaseWorker()
         { // Paste the connection string here. Be sure to include double quotation marks (")!
@@ -29,13 +29,13 @@ namespace CRUD_GROUP
             try { sqlCon.Close(); } catch { }
         }
 
-        public int ExecuteNonQuery(String sql)
+        public int ExecuteNonQuery(string sql)
         {
             sqlCmd = new SqlCommand(sql, sqlCon);
             return sqlCmd.ExecuteNonQuery();
         }
 
-        public DataTable ExecuteQuery(String sql)
+        public DataTable ExecuteQuery(string sql)
         {
             dTable = new DataTable();
             sqlDA = new SqlDataAdapter(sql, conStr);

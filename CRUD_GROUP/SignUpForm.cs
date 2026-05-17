@@ -21,45 +21,10 @@ namespace CRUD_GROUP
             w = new DatabaseWorker();
         }
 
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void panel4_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void txtUserName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
-        }
-
         private void LogIn_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Hide();
             Program.fLog.Show();
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
         }
         private int GetLastID()
         {

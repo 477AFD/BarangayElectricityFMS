@@ -34,34 +34,36 @@ namespace CRUD_GROUP
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.MainControl = new System.Windows.Forms.TabControl();
             this.Tab1 = new System.Windows.Forms.TabPage();
+            this.btnUnrecord = new System.Windows.Forms.Button();
             this.chkUnpaid = new System.Windows.Forms.CheckBox();
             this.FieldsPanel = new System.Windows.Forms.GroupBox();
+            this.UnrecordCheckBox = new System.Windows.Forms.CheckBox();
             this.PaidCheckBox = new System.Windows.Forms.CheckBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.CancelAddButton = new System.Windows.Forms.Button();
             this.txtID = new System.Windows.Forms.TextBox();
             this.lblID = new System.Windows.Forms.Label();
             this.txtReceipt = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblRef = new System.Windows.Forms.Label();
             this.txtRate = new System.Windows.Forms.TextBox();
             this.txtPrev = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblRate = new System.Windows.Forms.Label();
+            this.lblCurrent = new System.Windows.Forms.Label();
+            this.lblPrev = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.txtCurrent = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
@@ -155,6 +157,7 @@ namespace CRUD_GROUP
             // 
             // Tab1
             // 
+            this.Tab1.Controls.Add(this.btnUnrecord);
             this.Tab1.Controls.Add(this.chkUnpaid);
             this.Tab1.Controls.Add(this.FieldsPanel);
             this.Tab1.Controls.Add(this.dgvRecords);
@@ -168,10 +171,21 @@ namespace CRUD_GROUP
             this.Tab1.Text = "Records";
             this.Tab1.UseVisualStyleBackColor = true;
             // 
+            // btnUnrecord
+            // 
+            this.btnUnrecord.Location = new System.Drawing.Point(12, 57);
+            this.btnUnrecord.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnUnrecord.Name = "btnUnrecord";
+            this.btnUnrecord.Size = new System.Drawing.Size(341, 44);
+            this.btnUnrecord.TabIndex = 7;
+            this.btnUnrecord.Text = "Unclaimed IDs...";
+            this.btnUnrecord.UseVisualStyleBackColor = true;
+            this.btnUnrecord.Click += new System.EventHandler(this.btnUnrecord_Click);
+            // 
             // chkUnpaid
             // 
             this.chkUnpaid.AutoSize = true;
-            this.chkUnpaid.Location = new System.Drawing.Point(12, 76);
+            this.chkUnpaid.Location = new System.Drawing.Point(12, 107);
             this.chkUnpaid.Margin = new System.Windows.Forms.Padding(4);
             this.chkUnpaid.Name = "chkUnpaid";
             this.chkUnpaid.Size = new System.Drawing.Size(155, 20);
@@ -185,32 +199,47 @@ namespace CRUD_GROUP
             this.FieldsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.FieldsPanel.Controls.Add(this.UnrecordCheckBox);
             this.FieldsPanel.Controls.Add(this.PaidCheckBox);
             this.FieldsPanel.Controls.Add(this.btnDelete);
             this.FieldsPanel.Controls.Add(this.CancelAddButton);
             this.FieldsPanel.Controls.Add(this.txtID);
             this.FieldsPanel.Controls.Add(this.lblID);
             this.FieldsPanel.Controls.Add(this.txtReceipt);
-            this.FieldsPanel.Controls.Add(this.label2);
+            this.FieldsPanel.Controls.Add(this.lblRef);
             this.FieldsPanel.Controls.Add(this.txtRate);
             this.FieldsPanel.Controls.Add(this.txtPrev);
-            this.FieldsPanel.Controls.Add(this.label6);
-            this.FieldsPanel.Controls.Add(this.label5);
-            this.FieldsPanel.Controls.Add(this.label4);
+            this.FieldsPanel.Controls.Add(this.lblRate);
+            this.FieldsPanel.Controls.Add(this.lblCurrent);
+            this.FieldsPanel.Controls.Add(this.lblPrev);
             this.FieldsPanel.Controls.Add(this.lblName);
             this.FieldsPanel.Controls.Add(this.txtCurrent);
             this.FieldsPanel.Controls.Add(this.txtName);
             this.FieldsPanel.Controls.Add(this.btnSave);
             this.FieldsPanel.Controls.Add(this.btnUpdate);
             this.FieldsPanel.Enabled = false;
-            this.FieldsPanel.Location = new System.Drawing.Point(5, 6);
+            this.FieldsPanel.Location = new System.Drawing.Point(6, 6);
             this.FieldsPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.FieldsPanel.Name = "FieldsPanel";
             this.FieldsPanel.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.FieldsPanel.Size = new System.Drawing.Size(1261, 391);
+            this.FieldsPanel.Size = new System.Drawing.Size(1263, 391);
             this.FieldsPanel.TabIndex = 6;
             this.FieldsPanel.TabStop = false;
             this.FieldsPanel.Text = "Input";
+            // 
+            // UnrecordCheckBox
+            // 
+            this.UnrecordCheckBox.AutoSize = true;
+            this.UnrecordCheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UnrecordCheckBox.Location = new System.Drawing.Point(157, 295);
+            this.UnrecordCheckBox.Margin = new System.Windows.Forms.Padding(4);
+            this.UnrecordCheckBox.Name = "UnrecordCheckBox";
+            this.UnrecordCheckBox.Size = new System.Drawing.Size(162, 24);
+            this.UnrecordCheckBox.TabIndex = 23;
+            this.UnrecordCheckBox.Text = "Mark as unrecorded";
+            this.UnrecordCheckBox.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.UnrecordCheckBox.UseVisualStyleBackColor = true;
+            this.UnrecordCheckBox.CheckedChanged += new System.EventHandler(this.UnrecordCheckBox_CheckedChanged);
             // 
             // PaidCheckBox
             // 
@@ -224,7 +253,6 @@ namespace CRUD_GROUP
             this.PaidCheckBox.Text = "Is this paid?";
             this.PaidCheckBox.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.PaidCheckBox.UseVisualStyleBackColor = true;
-            this.PaidCheckBox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // btnDelete
             // 
@@ -243,7 +271,7 @@ namespace CRUD_GROUP
             // 
             this.CancelAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CancelAddButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.CancelAddButton.Location = new System.Drawing.Point(1125, 342);
+            this.CancelAddButton.Location = new System.Drawing.Point(1127, 342);
             this.CancelAddButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CancelAddButton.Name = "CancelAddButton";
             this.CancelAddButton.Size = new System.Drawing.Size(131, 44);
@@ -259,7 +287,7 @@ namespace CRUD_GROUP
             this.txtID.Location = new System.Drawing.Point(157, 30);
             this.txtID.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtID.Name = "txtID";
-            this.txtID.Size = new System.Drawing.Size(1071, 22);
+            this.txtID.Size = new System.Drawing.Size(1073, 22);
             this.txtID.TabIndex = 19;
             // 
             // lblID
@@ -279,18 +307,18 @@ namespace CRUD_GROUP
             this.txtReceipt.Location = new System.Drawing.Point(157, 246);
             this.txtReceipt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtReceipt.Name = "txtReceipt";
-            this.txtReceipt.Size = new System.Drawing.Size(1071, 22);
+            this.txtReceipt.Size = new System.Drawing.Size(1073, 22);
             this.txtReceipt.TabIndex = 17;
             // 
-            // label2
+            // lblRef
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(32, 249);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 20);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Receipt No.:";
+            this.lblRef.AutoSize = true;
+            this.lblRef.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRef.Location = new System.Drawing.Point(32, 249);
+            this.lblRef.Name = "lblRef";
+            this.lblRef.Size = new System.Drawing.Size(97, 20);
+            this.lblRef.TabIndex = 16;
+            this.lblRef.Text = "Reference ID:";
             // 
             // txtRate
             // 
@@ -299,7 +327,7 @@ namespace CRUD_GROUP
             this.txtRate.Location = new System.Drawing.Point(157, 202);
             this.txtRate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtRate.Name = "txtRate";
-            this.txtRate.Size = new System.Drawing.Size(1071, 22);
+            this.txtRate.Size = new System.Drawing.Size(1073, 22);
             this.txtRate.TabIndex = 15;
             // 
             // txtPrev
@@ -309,38 +337,38 @@ namespace CRUD_GROUP
             this.txtPrev.Location = new System.Drawing.Point(157, 113);
             this.txtPrev.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPrev.Name = "txtPrev";
-            this.txtPrev.Size = new System.Drawing.Size(1071, 22);
+            this.txtPrev.Size = new System.Drawing.Size(1073, 22);
             this.txtPrev.TabIndex = 14;
             // 
-            // label6
+            // lblRate
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(32, 204);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(106, 20);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Rate per KWH:";
+            this.lblRate.AutoSize = true;
+            this.lblRate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRate.Location = new System.Drawing.Point(32, 204);
+            this.lblRate.Name = "lblRate";
+            this.lblRate.Size = new System.Drawing.Size(106, 20);
+            this.lblRate.TabIndex = 13;
+            this.lblRate.Text = "Rate per KWH:";
             // 
-            // label5
+            // lblCurrent
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(32, 158);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(98, 20);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "Current KWH:";
+            this.lblCurrent.AutoSize = true;
+            this.lblCurrent.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrent.Location = new System.Drawing.Point(32, 158);
+            this.lblCurrent.Name = "lblCurrent";
+            this.lblCurrent.Size = new System.Drawing.Size(98, 20);
+            this.lblCurrent.TabIndex = 12;
+            this.lblCurrent.Text = "Current KWH:";
             // 
-            // label4
+            // lblPrev
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(32, 113);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(105, 20);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Previous KWH:";
+            this.lblPrev.AutoSize = true;
+            this.lblPrev.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPrev.Location = new System.Drawing.Point(32, 113);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(105, 20);
+            this.lblPrev.TabIndex = 11;
+            this.lblPrev.Text = "Previous KWH:";
             // 
             // lblName
             // 
@@ -359,9 +387,8 @@ namespace CRUD_GROUP
             this.txtCurrent.Location = new System.Drawing.Point(157, 158);
             this.txtCurrent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtCurrent.Name = "txtCurrent";
-            this.txtCurrent.Size = new System.Drawing.Size(1071, 22);
+            this.txtCurrent.Size = new System.Drawing.Size(1073, 22);
             this.txtCurrent.TabIndex = 8;
-            this.txtCurrent.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // txtName
             // 
@@ -370,9 +397,8 @@ namespace CRUD_GROUP
             this.txtName.Location = new System.Drawing.Point(157, 73);
             this.txtName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(1071, 22);
+            this.txtName.Size = new System.Drawing.Size(1073, 22);
             this.txtName.TabIndex = 7;
-            this.txtName.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // btnSave
             // 
@@ -406,14 +432,16 @@ namespace CRUD_GROUP
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvRecords.AutoGenerateColumns = false;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecords.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            this.dgvRecords.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dgvRecords.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecords.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvRecords.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRecords.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.iDDataGridViewTextBoxColumn,
@@ -426,39 +454,40 @@ namespace CRUD_GROUP
             this.Paid,
             this.DateCreated});
             this.dgvRecords.DataSource = this.recordTableBindingSource3;
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle23;
-            this.dgvRecords.Location = new System.Drawing.Point(365, 6);
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle11;
+            this.dgvRecords.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.dgvRecords.Location = new System.Drawing.Point(365, 9);
             this.dgvRecords.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvRecords.MultiSelect = false;
             this.dgvRecords.Name = "dgvRecords";
             this.dgvRecords.ReadOnly = true;
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecords.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecords.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dgvRecords.RowHeadersWidth = 51;
             this.dgvRecords.RowTemplate.Height = 24;
             this.dgvRecords.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRecords.Size = new System.Drawing.Size(901, 391);
+            this.dgvRecords.Size = new System.Drawing.Size(901, 388);
             this.dgvRecords.TabIndex = 0;
             this.dgvRecords.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // iDDataGridViewTextBoxColumn
             // 
             this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            dataGridViewCellStyle14.NullValue = "+";
-            this.iDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.NullValue = "+";
+            this.iDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
             this.iDDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
@@ -469,8 +498,8 @@ namespace CRUD_GROUP
             // customerNameDataGridViewTextBoxColumn
             // 
             this.customerNameDataGridViewTextBoxColumn.DataPropertyName = "CustomerName";
-            dataGridViewCellStyle15.NullValue = "+";
-            this.customerNameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.NullValue = "+";
+            this.customerNameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.customerNameDataGridViewTextBoxColumn.HeaderText = "Name of Customer";
             this.customerNameDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.customerNameDataGridViewTextBoxColumn.Name = "customerNameDataGridViewTextBoxColumn";
@@ -480,8 +509,8 @@ namespace CRUD_GROUP
             // previousKWHDataGridViewTextBoxColumn
             // 
             this.previousKWHDataGridViewTextBoxColumn.DataPropertyName = "PreviousKWH";
-            dataGridViewCellStyle16.NullValue = "+";
-            this.previousKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle4.NullValue = "+";
+            this.previousKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.previousKWHDataGridViewTextBoxColumn.HeaderText = "Previous kWh";
             this.previousKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.previousKWHDataGridViewTextBoxColumn.Name = "previousKWHDataGridViewTextBoxColumn";
@@ -491,8 +520,8 @@ namespace CRUD_GROUP
             // currentKWHDataGridViewTextBoxColumn
             // 
             this.currentKWHDataGridViewTextBoxColumn.DataPropertyName = "CurrentKWH";
-            dataGridViewCellStyle17.NullValue = "+";
-            this.currentKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle5.NullValue = "+";
+            this.currentKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle5;
             this.currentKWHDataGridViewTextBoxColumn.HeaderText = "Current kWh";
             this.currentKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.currentKWHDataGridViewTextBoxColumn.Name = "currentKWHDataGridViewTextBoxColumn";
@@ -502,9 +531,9 @@ namespace CRUD_GROUP
             // ratePerKWHDataGridViewTextBoxColumn
             // 
             this.ratePerKWHDataGridViewTextBoxColumn.DataPropertyName = "RatePerKWH";
-            dataGridViewCellStyle18.Format = "C2";
-            dataGridViewCellStyle18.NullValue = "+";
-            this.ratePerKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle6.Format = "C2";
+            dataGridViewCellStyle6.NullValue = "+";
+            this.ratePerKWHDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle6;
             this.ratePerKWHDataGridViewTextBoxColumn.HeaderText = "Price Rate per kWh";
             this.ratePerKWHDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.ratePerKWHDataGridViewTextBoxColumn.Name = "ratePerKWHDataGridViewTextBoxColumn";
@@ -514,9 +543,9 @@ namespace CRUD_GROUP
             // priceDataGridViewTextBoxColumn
             // 
             this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            dataGridViewCellStyle19.Format = "C2";
-            dataGridViewCellStyle19.NullValue = "+";
-            this.priceDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle7.Format = "C2";
+            dataGridViewCellStyle7.NullValue = "+";
+            this.priceDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
             this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
             this.priceDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
@@ -526,8 +555,8 @@ namespace CRUD_GROUP
             // receiptNoDataGridViewTextBoxColumn
             // 
             this.receiptNoDataGridViewTextBoxColumn.DataPropertyName = "ReceiptNo";
-            dataGridViewCellStyle20.NullValue = "+";
-            this.receiptNoDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle8.NullValue = "+";
+            this.receiptNoDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle8;
             this.receiptNoDataGridViewTextBoxColumn.HeaderText = "Receipt #";
             this.receiptNoDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.receiptNoDataGridViewTextBoxColumn.Name = "receiptNoDataGridViewTextBoxColumn";
@@ -537,8 +566,8 @@ namespace CRUD_GROUP
             // Paid
             // 
             this.Paid.DataPropertyName = "Paid";
-            dataGridViewCellStyle21.NullValue = "+";
-            this.Paid.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle9.NullValue = "+";
+            this.Paid.DefaultCellStyle = dataGridViewCellStyle9;
             this.Paid.HeaderText = "Is it paid?";
             this.Paid.MinimumWidth = 6;
             this.Paid.Name = "Paid";
@@ -548,9 +577,9 @@ namespace CRUD_GROUP
             // DateCreated
             // 
             this.DateCreated.DataPropertyName = "DateCreated";
-            dataGridViewCellStyle22.Format = "D";
-            dataGridViewCellStyle22.NullValue = "n.d.";
-            this.DateCreated.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle10.Format = "D";
+            dataGridViewCellStyle10.NullValue = "n.d.";
+            this.DateCreated.DefaultCellStyle = dataGridViewCellStyle10;
             this.DateCreated.HeaderText = "Date";
             this.DateCreated.MinimumWidth = 6;
             this.DateCreated.Name = "DateCreated";
@@ -642,13 +671,11 @@ namespace CRUD_GROUP
             this.picGraph.Location = new System.Drawing.Point(7, 6);
             this.picGraph.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.picGraph.Name = "picGraph";
-            this.picGraph.Size = new System.Drawing.Size(1236, 224);
+            this.picGraph.Size = new System.Drawing.Size(1236, 223);
             this.picGraph.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picGraph.TabIndex = 0;
             this.picGraph.TabStop = false;
-            this.picGraph.Click += new System.EventHandler(this.picGraph_Click);
             this.picGraph.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picGraph_MouseClick);
-            this.picGraph.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.picGraph_MouseDoubleClick);
             // 
             // RateTrend
             // 
@@ -672,13 +699,11 @@ namespace CRUD_GROUP
             this.picGraphPricePerKwh.Location = new System.Drawing.Point(7, 6);
             this.picGraphPricePerKwh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.picGraphPricePerKwh.Name = "picGraphPricePerKwh";
-            this.picGraphPricePerKwh.Size = new System.Drawing.Size(1236, 224);
+            this.picGraphPricePerKwh.Size = new System.Drawing.Size(1236, 223);
             this.picGraphPricePerKwh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picGraphPricePerKwh.TabIndex = 1;
             this.picGraphPricePerKwh.TabStop = false;
-            this.picGraphPricePerKwh.Click += new System.EventHandler(this.picGraphPricePerKwh_Click);
             this.picGraphPricePerKwh.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picGraphPricePerKwh_MouseClick);
-            this.picGraphPricePerKwh.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.picGraphPricePerKwh_MouseDoubleClick);
             // 
             // PrintButton
             // 
@@ -764,7 +789,6 @@ namespace CRUD_GROUP
             this.strMain.Size = new System.Drawing.Size(1307, 32);
             this.strMain.TabIndex = 1;
             this.strMain.Text = "MainMenuStrip";
-            this.strMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 
@@ -785,7 +809,6 @@ namespace CRUD_GROUP
             this.accountInformationToolStripMenuItem.Name = "accountInformationToolStripMenuItem";
             this.accountInformationToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
             this.accountInformationToolStripMenuItem.Text = "Account";
-            this.accountInformationToolStripMenuItem.Click += new System.EventHandler(this.accountInformationToolStripMenuItem_Click);
             // 
             // infoToolStripMenuItem
             // 
@@ -847,8 +870,7 @@ namespace CRUD_GROUP
             this.SearchComboBox.Items.AddRange(new object[] {
             "All"});
             this.SearchComboBox.Name = "SearchComboBox";
-            this.SearchComboBox.Size = new System.Drawing.Size(121, 28);
-            this.SearchComboBox.Click += new System.EventHandler(this.SearchComboBox_Click);
+            this.SearchComboBox.Size = new System.Drawing.Size(250, 28);
             // 
             // searchToolStripMenuItem
             // 
@@ -863,12 +885,12 @@ namespace CRUD_GROUP
             this.UserLabel.AutoSize = true;
             this.UserLabel.BackColor = System.Drawing.Color.SkyBlue;
             this.UserLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UserLabel.Location = new System.Drawing.Point(749, 0);
+            this.UserLabel.Location = new System.Drawing.Point(353, 0);
             this.UserLabel.Name = "UserLabel";
             this.UserLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.UserLabel.Size = new System.Drawing.Size(125, 20);
+            this.UserLabel.Size = new System.Drawing.Size(19, 20);
             this.UserLabel.TabIndex = 3;
-            this.UserLabel.Text = "admin@localhost";
+            this.UserLabel.Text = "[]";
             this.UserLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // recordTableTableAdapter
@@ -884,12 +906,13 @@ namespace CRUD_GROUP
             this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.BackColor = System.Drawing.Color.SkyBlue;
+            this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.flowLayoutPanel1.Controls.Add(this.UserLabel);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(417, 7);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(919, 5);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(877, 17);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(375, 25);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // recordTableTableAdapter2
@@ -911,7 +934,7 @@ namespace CRUD_GROUP
             this.Controls.Add(this.strMain);
             this.MainMenuStrip = this.strMain;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MinimumSize = new System.Drawing.Size(1322, 541);
+            this.MinimumSize = new System.Drawing.Size(1322, 539);
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -980,14 +1003,14 @@ namespace CRUD_GROUP
         private RecordsDataSetTableAdapters.RecordTableTableAdapter recordTableTableAdapter;
         private System.Windows.Forms.TextBox txtCurrent;
         private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblPrev;
         private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblCurrent;
+        private System.Windows.Forms.Label lblRate;
         private System.Windows.Forms.TextBox txtPrev;
         private System.Windows.Forms.TextBox txtRate;
         private System.Windows.Forms.TextBox txtReceipt;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblRef;
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
@@ -1019,6 +1042,8 @@ namespace CRUD_GROUP
         private RecordsDataSet2 recordsDataSet2;
         private BindingSource recordTableBindingSource3;
         private RecordsDataSet2TableAdapters.RecordTableTableAdapter recordTableTableAdapter3;
+        private Button btnUnrecord;
+        private CheckBox UnrecordCheckBox;
     }
 }
 

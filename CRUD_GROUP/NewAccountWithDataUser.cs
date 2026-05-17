@@ -10,18 +10,22 @@ using System.Windows.Forms;
 
 namespace CRUD_GROUP
 {
-    public partial class NewAccount : Form
+    public partial class NewAccountWithDataUser : Form
     {
-        DatabaseWorker w;
-        public NewAccount(DatabaseWorker db)
+        readonly DatabaseWorker w;
+
+        readonly DataFormat f;
+
+        public NewAccountWithDataUser(DatabaseWorker db, DataFormat df)
         {
             InitializeComponent();
-            w = db;
+            w = db ?? throw new Exception("The worker does not exist.");
+            f = df;
         }
 
-        private void NewAccount_Load(object sender, EventArgs e)
+        private void NewAccountWithDataUser_Load(object sender, EventArgs e)
         {
-            cboAccountType.SelectedIndex = 0;
+            txtName.Text = f.Username;
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
@@ -56,7 +60,7 @@ namespace CRUD_GROUP
              * T T [T4]
              */
             DataTable ptr = w.ExecuteQuery("SELECT Username FROM AccountTBL");
-            
+
             t[4] = !t[2] || !t[3] || (txtConfPwd.Text == txtPwd.Text);
             string wpetoro = "Please correct the following fields:";
             wpetoro += !t[0] ? "\n- The username is empty or contains spaces" : "";
@@ -78,26 +82,25 @@ namespace CRUD_GROUP
             {
                 // Create new account!
                 int idx = GetLastID();
-                int pf = cboAccountType.SelectedIndex;
-                string cmd = $"INSERT INTO AccountTBL VALUES ({idx}, '{txtName.Text}','{txtPwd.Text}', {pf}, '{txtDisplayName.Text}')";
+                string cmd = $"INSERT INTO AccountTBL VALUES ({idx}, '{txtName.Text}','{txtPwd.Text}', 0, '{txtDisplayName.Text}')";
                 try
                 {
                     int rows = w.ExecuteNonQuery(cmd);
                     if (rows > 0)
                     {
-                        MessageBox.Show("Account created!", $"Affected rows: {rows}", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // This only redirects back to the main form!
                         DialogResult = DialogResult.OK;
                         Close();
                     }
                     else
                     {
                         MessageBox.Show("An error has been occured.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        
+
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Sorry, Zelda found a SEEKER in her Minecraft world.\n\n{ex}","Guru meditation",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Sorry, Zelda found a SEEKER in her Minecraft world.\n\n{ex}", "Guru meditation", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -105,10 +108,29 @@ namespace CRUD_GROUP
                 MessageBox.Show(wpetoro, "Validation Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+    }
 
-        private void cboAccountType_SelectedIndexChanged(object sender, EventArgs e)
+    public struct DataFormat
+    {
+        public DataFormat(string usr, decimal PrevKWH, decimal NextKWH, decimal RateKWH, string Reference)
         {
-
+            PreviousKWH = PrevKWH;
+            CurrentKWH = NextKWH;
+            PricePerKWH = RateKWH;
+            ReferenceID = Reference;
+            Username = usr;
+        }
+        public string Username { get; }
+        public decimal PreviousKWH { get; }
+        public decimal CurrentKWH { get; }
+        public decimal PricePerKWH { get; }
+        public string ReferenceID { get; }
+        public decimal Price
+        {
+            get
+            {
+                return (CurrentKWH - PreviousKWH) * PricePerKWH;
+            }
         }
     }
 }

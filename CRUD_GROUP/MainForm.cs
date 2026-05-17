@@ -1,35 +1,48 @@
 ﻿using GraphingTests;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Data.Common;
 
 namespace CRUD_GROUP
 {
     public partial class MainForm : Form
     {
+        /*
+         NOTE:
+         You may see #region and #endregion macros.
+         Those are macros for the text editor in the integrated development
+         environment for .NET and Visual Studio to organize methods and fields.
+         Those do not affect the operation of the program. But deleting 
+         #endregion without its corresponding #region <name> will cause a compilation
+         error.
+        */
+
+        // These are the variables.
+        #region Variables
         // Default (root) account
         KeyValuePair<string, string> adminAccount = new KeyValuePair<string, string>("admin", "TLoZ_B0TW32");
         // is admin
-        readonly bool admin = false;
+        readonly int admin = 0;
         // Account log-in
         KeyValuePair<string, string> account;
         // Database Worker
         readonly DatabaseWorker db;
+        // Graph Worker
+        GraphWorker p;
+        // Is it actually in adding or editing state?
+        bool isAdding = false;
+        // Exit bool variable
+        bool ft = false;
+        #endregion
+
+        // This is the class constructor. This part checks for the password.
+        #region Constructor
         public MainForm(KeyValuePair<string, string> accountName)
         {
             InitializeComponent();
@@ -42,7 +55,7 @@ namespace CRUD_GROUP
             if (accountName.Key == adminAccount.Key && accountName.Value == adminAccount.Value)
             {
                 account = new KeyValuePair<string, string>(accountName.Key, accountName.Value);
-                admin = true;
+                admin = 1;
                 UserLabel.Text = "Administrator";
             }
             else try // If it is not a root account
@@ -73,19 +86,23 @@ namespace CRUD_GROUP
                             // Install account to a KeyValuePair
                             account = new KeyValuePair<string, string>(accountName.Key, accountName.Value);
                             // Check if it is an admin account
-                            admin = int.Parse(accountInfo.Rows[0]["isAdmin"].ToString()) == 1;
+                            admin = int.Parse(accountInfo.Rows[0]["isAdmin"].ToString());
+
                         }
                     }
                     else
                     {
                         throw new AccessViolationException("SYS:0001");
                     }
-                    if (admin)
+                    if (admin == 1)
                     {
                         UserLabel.Text = "Administrator";
+                    } else if (admin == 2)
+                    {
+                        UserLabel.Text = "Secretary";
                     } else
                     {
-                        UserLabel.Text = $"User: {account.Key}";
+                        UserLabel.Text = $"{account.Key}";
                         //CreateGraph();
                     }
                     Debug.WriteLine("Fill Search Operations");
@@ -98,26 +115,35 @@ namespace CRUD_GROUP
                     else throw new Exception($"[Exception] SEEKER DETECTED:\n\n{ex}");
                 }
         }
-        GraphWorker p;
+        #endregion
+
+        // This creates a graph worker object.
+        #region Graph Worker Creator
         public void Draw()
         {
-            if (!admin)
+            if (admin == 0)
             {
                 string name = GetName();
                 string sql = $"SELECT RatePerKWH, Price FROM RecordTable WHERE CustomerName = '{name}' ORDER BY RecordTimeIndex ASC";
                 DataTable spill = db.ExecuteQuery(sql);
                 p = GraphWorker.MakeGraphWorker(spill);
+                p.GraphType = 1;
                 p.DrawLineExt(picGraph, 1, Color.Blue, null, 1, 250);
                 p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, null, 1, 1);
             }
         }
+        #endregion
 
+        // This displays/updates the DataGridView.
+        #region Display data to DataGridView
         public void DisplayData()
         {
-            string name = (SearchComboBox.Text != "All" || !string.IsNullOrEmpty(SearchComboBox.Text)) ? GetName() : string.Empty;
+            string name = (SearchComboBox.Text != "[ALL]" || !string.IsNullOrEmpty(SearchComboBox.Text)) ? SearchComboBox.Text : string.Empty;
             string sql;
-            if (admin && !string.IsNullOrEmpty(name)) sql = $"SELECT * FROM RecordTable WHERE CustomerName = '{name}'";
-            else if (admin) sql = "SELECT * FROM RecordTable";
+            if (admin == 0) name = GetName();
+            //AND NOT CustomerName = '{account.Key}'
+            if (admin != 0 && SearchComboBox.Text != "[ALL]") sql = $"SELECT * FROM RecordTable WHERE CustomerName LIKE '%{name}%' COLLATE SQL_Latin1_General_CP1_CI_AS";
+            else if (admin != 0 && SearchComboBox.Text == "[ALL]") sql = "SELECT * FROM RecordTable";
             else sql = $"SELECT * FROM RecordTable WHERE CustomerName = '{name}'";
             if (chkUnpaid.Checked)
             {
@@ -126,11 +152,14 @@ namespace CRUD_GROUP
             Debug.WriteLine(sql);
             dgvRecords.DataSource = db.ExecuteQuery(sql);
         }
+        #endregion
 
+        // This gets the name of the current account.
+        #region Get name of user
         private string GetName()
         {
             string name = SearchComboBox.Text;
-            if (admin)
+            if (admin >= 1)
             {
                 DataTable s = db.ExecuteQuery("SELECT CustomerName FROM RecordTable");
                 foreach (DataRow e in s.Rows)
@@ -144,35 +173,46 @@ namespace CRUD_GROUP
                 return account.Key;
             }
         }
+        #endregion
 
+        // This adds/updates the search list.
+        #region Add items to search bar
         private void FillSearch()
         {
             SearchComboBox.Items.Clear();
+            List<string> str = new List<string>();
+            List<string> ptr = new List<string>();
             DataTable s = db.ExecuteQuery("SELECT CustomerName FROM RecordTable");
             DataTable d = db.ExecuteQuery("SELECT Username FROM AccountTBL");
             foreach (DataRow e in d.Rows)
             {
-                SearchComboBox.Items.Add(e["Username"].ToString());
+                ptr.Add(e["Username"].ToString());
             }
-            bool dd = false;
+
             foreach (DataRow e in s.Rows)
             {
-                dd = false;
+                bool dd = false;
                 string w = e["CustomerName"].ToString();
-                ComboBox.ObjectCollection list = SearchComboBox.Items;
-                foreach (string item in list) 
+                foreach (string item in ptr) 
                 {
-                    if (w == item)
+                    if (w == item || item == account.Key)
                     {
                         dd = true;
                         break;
                     }
                 }
-                if (!dd) SearchComboBox.Items.Add(w);
+                if (!dd) str.Add(w);
             }
-
+            str.AddRange(ptr);
+            str.Sort();
+            SearchComboBox.Items.Add("[ALL]");
+            SearchComboBox.Items.AddRange(str.ToArray());
+            //SearchComboBox.Items.Sort();
         }
+        #endregion
 
+        // This clears the input fields.
+        #region Clear fields
         public void ClearData()
         {
             txtName.Clear();
@@ -181,25 +221,24 @@ namespace CRUD_GROUP
             txtRate.Clear();
             txtReceipt.Clear();
         }
+        #endregion
 
-
+        // This event draws the graph when the user clicks the Graph tab.
+        #region Draw graph when selecting "Graph" in tab control
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (MainControl.SelectedIndex == 1) {
                 Draw();
             }
-            
         }
+        #endregion
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
+        // This event occurs when one clicks a cell in DataGridView
+        #region Copy data to fields when an item is clicked then redirect user to Add/Edit page
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
-            if (index < 0 || index >= dgvRecords.Rows.Count)
+            if (index < 0 || index >= dgvRecords.Rows.Count || admin == 0)
             {
                 return;
             }
@@ -217,73 +256,141 @@ namespace CRUD_GROUP
             dgvRecords.Visible = false;
             FieldsPanel.Enabled = true;
             FieldsPanel.Visible = true;
-            chkUnpaid.Enabled = false;
-            chkUnpaid.Visible = false;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            // TODO: This line of code loads data into the 'recordsDataSet2.RecordTable' table. You can move, or remove it, as needed.
-            this.recordTableTableAdapter3.Fill(this.recordsDataSet2.RecordTable);
-            // TODO: This line of code loads data into the 'recordList.RecordTable' table. You can move, or remove it, as needed.
-            // TODO: This line of code loads data into the 'recordsDataSet1.RecordTable' table. You can move, or remove it, as needed.
-            // TODO: This line of code loads data into the 'recordsDataSet.RecordTable' table. You can move, or remove it, as needed.
-            Debug.WriteLine("Inserting data");
-            DisplayData();
-            if (!admin)
+            txtName.Enabled = false;
+            if (admin > 0)
             {
-                txtID.Enabled = false;
-                lblID.Enabled = false;
-                txtID.Visible = false;
-                lblID.Visible = false;
-                btnUpdate.Text = "Cancel";
-                btnSave.Text = "New Record";
-                SearchComboBox.Enabled = false;
-                SearchComboBox.Visible = false;
-                searchToolStripMenuItem.Enabled = false;
-                searchToolStripMenuItem.Visible = false;
-                lblName.Enabled = false;
-                lblName.Visible = false;
-                txtName.Visible = false;
-                txtName.Enabled = false;
-                CancelAddButton.Enabled = false;
-                CancelAddButton.Visible = false;
-                dgvRecords.Columns[7].Visible = false;
-                dgvRecords.Columns[1].Visible = false;
-                btnDelete.Enabled = false;
-                btnDelete.Visible = false;
-                infoToolStripMenuItem.Visible = false;
-                infoToolStripMenuItem.Enabled = false;
+                chkUnpaid.Enabled = false;
+                chkUnpaid.Visible = false;
+                txtPrev.Enabled = true;
+                txtPrev.Visible = true;
+                chkUnpaid.Enabled = false;
+                chkUnpaid.Visible = false;
+                btnUnrecord.Enabled = false;
+                btnUnrecord.Visible = false;
+            }
+        }
+        #endregion
+
+        // This function adds a dark effect to all elements in MainForm when a dialog is open
+        #region Apply blur toggle
+
+        Form overlay;
+        private void ToggleDark(bool on)
+        {   
+            if (on)
+            {
+                overlay = new Form
+                {
+                    FormBorderStyle = FormBorderStyle.None,
+                    BackColor = Color.Black,
+                    Opacity = 0.50,
+                    ShowInTaskbar = false,
+                    StartPosition = FormStartPosition.Manual,
+                    Bounds = Bounds,
+                    Owner = this
+                };
+                overlay.Show();
             } else
             {
-                MainControl.TabPages.Remove(Tab2);
-                graphToolStripMenuItem.Enabled = false;
-                graphToolStripMenuItem.Visible = false;
-                dgvRecords.Columns[0].Visible = true;
+                Activate();
+                Focus();
+                overlay.Hide();
+                overlay.Close();
+                overlay.Dispose();
             }
-
         }
+        #endregion
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        // This event occurs when the form loads.
+        #region Apply scope and limitations to the form depending on account
+        private void MainForm_Load(object sender, EventArgs e)
         {
-
+            Debug.WriteLine("Inserting data");
+            DisplayData();
+            // User
+            switch (admin)
+            {
+                case 0:
+                    txtID.Enabled = false;
+                    lblID.Enabled = false;
+                    txtID.Visible = false;
+                    lblID.Visible = false;
+                    btnUpdate.Text = "Cancel";
+                    btnSave.Text = "Append";
+                    SearchComboBox.Enabled = false;
+                    SearchComboBox.Visible = false;
+                    searchToolStripMenuItem.Enabled = false;
+                    searchToolStripMenuItem.Visible = false;
+                    lblName.Enabled = false;
+                    lblName.Visible = false;
+                    lblCurrent.Enabled = false;
+                    lblCurrent.Visible = false;
+                    lblPrev.Enabled = false;
+                    lblPrev.Visible = false;
+                    lblRate.Enabled = false;
+                    lblRate.Visible = false;
+                    txtName.Visible = false;
+                    txtName.Enabled = false;
+                    btnUnrecord.Enabled = false;
+                    btnUnrecord.Visible = false;
+                    txtPrev.Enabled= false;
+                    txtPrev.Visible = false;
+                    txtCurrent.Enabled = false;
+                    txtCurrent.Visible = false;
+                    txtRate.Enabled = false;
+                    txtRate.Visible = false;
+                    CancelAddButton.Enabled = false;
+                    CancelAddButton.Visible = false;
+                    dgvRecords.Columns[7].Visible = false;
+                    dgvRecords.Columns[1].Visible = false;
+                    btnDelete.Enabled = false;
+                    btnDelete.Visible = false;
+                    txtReceipt.Location = new Point(157, 30);
+                    lblRef.Location = new Point(32, 30);
+                    txtReceipt.Size = new Size(640, 22);
+                    infoToolStripMenuItem.Visible = false;
+                    infoToolStripMenuItem.Enabled = false;
+                    chkUnpaid.Enabled = false;
+                    chkUnpaid.Visible = false;
+                    PaidCheckBox.Enabled = false;
+                    PaidCheckBox.Visible = false;
+                    UnrecordCheckBox.Enabled = false;
+                    UnrecordCheckBox.Visible = false;
+                    break;
+                case 1:
+                    MainControl.TabPages.Remove(Tab2);
+                    graphToolStripMenuItem.Enabled = false;
+                    graphToolStripMenuItem.Visible = false;
+                    dgvRecords.Columns[0].Visible = true;
+                    break;
+                case 2:
+                    MainControl.TabPages.Remove(Tab2);
+                    graphToolStripMenuItem.Enabled = false;
+                    graphToolStripMenuItem.Visible = false;
+                    dgvRecords.Columns[0].Visible = true;
+                    PaidCheckBox.Enabled = false;
+                    PaidCheckBox.Visible = false;
+                    btnDelete.Enabled = false;
+                    btnDelete.Visible = false;
+                    btnUpdate.Text = "Cancel";
+                    btnSave.Text = "New Record";
+                    CancelAddButton.Enabled = false;
+                    CancelAddButton.Visible = false;
+                    infoToolStripMenuItem.Visible = false;
+                    infoToolStripMenuItem.Enabled = false;
+                    UnrecordCheckBox.Enabled = false;
+                    UnrecordCheckBox.Visible = false;
+                    break;
+            }
         }
+        #endregion
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private int GetLastID()
+        // This gets the next usable ID.
+        #region Get last unused ID of list
+        private int GetLastID(bool unrecord = false)
         {
             int lastID = 0;
-            DataTable e = db.ExecuteQuery("SELECT ID FROM RecordTable ORDER BY ID ASC");
+            DataTable e = (unrecord) ? db.ExecuteQuery("SELECT ID FROM UnrecordTable ORDER BY ID ASC") : db.ExecuteQuery("SELECT ID FROM RecordTable ORDER BY ID ASC");
             for (int i = 0; i < e.Rows.Count; i++)
             {
                 if (lastID == int.Parse(e.Rows[i]["ID"].ToString())) lastID++;
@@ -291,7 +398,10 @@ namespace CRUD_GROUP
             }
             return lastID;
         }
+        #endregion
 
+        // This gets the next chronological index.
+        #region Get the uppermost index for time
         private int GetLastIndex()
         {
             int lastID = 0;
@@ -303,24 +413,37 @@ namespace CRUD_GROUP
             }
             return lastID + 1;
         }
+        #endregion
 
+        // This event occurs when the user clicks the Create/New Record button.
+        #region Create new row with specified data
         private void button3_Click(object sender, EventArgs e)
         {
             if (!ValidateInput(false, true)) return;
-            string x = (admin) ? txtName.Text : account.Key;
+            if (admin == 0)
+            {
+                AddButtonUsr_Click(sender, e);
+                return;
+            }
+            string x = (admin != 0) ? txtName.Text : account.Key;
             decimal pricePerKwh = decimal.Parse(txtRate.Text);
             decimal a = decimal.Parse(txtPrev.Text);
             decimal b = decimal.Parse(txtCurrent.Text);
-            decimal price = (b - a) * pricePerKwh;
+            int id = GetLastID(admin == 2 || UnrecordCheckBox.Checked);
             int idx = GetLastIndex();
+            decimal c = (b - a) * pricePerKwh;
             string dt = DateTime.Now.ToString("yyyy-MM-dd");
-            int r = PaidCheckBox.Checked ? 1 : 0;
-            int id = GetLastID();
-            string sql = "INSERT INTO RecordTable VALUES (" + id +
-                ", '" + x +
-                "', '" + a + "', '" + b + "', "+  pricePerKwh +
-                 ", " + price + ", '" + txtReceipt.Text + "', "+r+", "+idx+", '"+dt+"')";
+            DataFormat fa = new DataFormat(x, a, b, pricePerKwh, txtReceipt.Text);
+            int d = (admin == 1) ? (PaidCheckBox.Checked) ? 1 : 0 : 0;
+            string sql = (admin == 2 || UnrecordCheckBox.Checked) ? $"INSERT INTO UnrecordTable VALUES ({id}, '{x}', {a}, {b}, {pricePerKwh}, '{txtReceipt.Text}')" : $"INSERT INTO RecordTable VALUES ({id},'{x}',{a}, {b}, {pricePerKwh}, {c}, '{txtReceipt.Text}', {d}, {idx}, '{dt}')";
             Debug.WriteLine(sql);
+            DataTable usr = db.ExecuteQuery($"SELECT * FROM AccountTBL WHERE Username = '{x}'");
+            if (usr.Rows.Count < 1)
+            {
+                NewAccountWithDataUser fuse = new NewAccountWithDataUser(db, fa);
+                DialogResult res = fuse.ShowDialog();
+                if (res != DialogResult.OK) return;
+            }
             try
             {
                 int t = db.ExecuteNonQuery(sql);
@@ -337,8 +460,13 @@ namespace CRUD_GROUP
                     dgvRecords.Visible = true;
                     FieldsPanel.Enabled = false;
                     FieldsPanel.Visible = false;
-                    chkUnpaid.Enabled = true;
-                    chkUnpaid.Visible = true;
+                    if (admin >= 1)
+                    {
+                        chkUnpaid.Enabled = true;
+                        chkUnpaid.Visible = true;
+                        btnUnrecord.Enabled = true;
+                        btnUnrecord.Visible = true;
+                    }
                 }
                 else
                 {
@@ -350,15 +478,18 @@ namespace CRUD_GROUP
                 MessageBox.Show($"An error has been occurred.\n\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        #endregion
 
+        // This checks for all fields before performing the CRUD.
+        #region Validate fields before confirmation
         private bool ValidateInput(bool delete, bool add)
         {
             bool[] ftd = new bool[6];
-            ftd[0] = !admin || add || uint.TryParse(txtID.Text, out _) && !string.IsNullOrWhiteSpace(txtID.Text);
-            ftd[1] = !admin || delete || !string.IsNullOrWhiteSpace(txtName.Text);
-            ftd[2] = delete || uint.TryParse(txtPrev.Text, out _);
-            ftd[3] = delete || uint.TryParse(txtCurrent.Text, out _);
-            ftd[4] = delete || decimal.TryParse(txtRate.Text, out decimal f) && f >= 0;
+            ftd[0] = admin == 0 || add || uint.TryParse(txtID.Text, out _) && !string.IsNullOrWhiteSpace(txtID.Text);
+            ftd[1] = admin == 0 || delete || !string.IsNullOrWhiteSpace(txtName.Text);
+            ftd[2] = admin == 0 || delete || uint.TryParse(txtPrev.Text, out _);
+            ftd[3] = admin == 0 || delete || uint.TryParse(txtCurrent.Text, out _);
+            ftd[4] = admin == 0 || delete || decimal.TryParse(txtRate.Text, out decimal f) && f >= 0;
             ftd[5] = delete || !string.IsNullOrWhiteSpace(txtReceipt.Text);
             string wpetoro = "";
             wpetoro += (!ftd[0]) ? "- The ID is not specified or it is not a positive integer\n" : "";
@@ -366,7 +497,7 @@ namespace CRUD_GROUP
             wpetoro += (!ftd[2]) ? "- The Previous kWh is not in a decimal format or it is negative\n" : "";
             wpetoro += (!ftd[3]) ? "- The Current kWh is not in a decimal format or it is negative\n" : "";
             wpetoro += (!ftd[4]) ? "- The rate per kWh was not in a decimal format or it is negative\n" : "";
-            wpetoro += (!ftd[5]) ? "- The receipt number is not specified\n" : "";
+            wpetoro += (!ftd[5]) ? "- The reference ID is not specified\n" : "";
             if (ftd[0] && ftd[1] && ftd[2] && ftd[3] && ftd[4] && ftd[5]) return true;
             else
             {
@@ -374,10 +505,13 @@ namespace CRUD_GROUP
                 return false;
             }
         }
+        #endregion
 
+        // This updates the fields in a row when a user clicks "Update".
+        #region Update fields in a row
         private void btnUpdate_Click(object sender, EventArgs e) // Admins Only!
         {
-            if (admin)
+            if (admin == 1)
             {
                 if (!ValidateInput(false, false)) return;
                 decimal pricePerKwh = decimal.Parse(txtRate.Text);
@@ -408,8 +542,13 @@ namespace CRUD_GROUP
                     dgvRecords.Visible = true;
                     FieldsPanel.Enabled = false;
                     FieldsPanel.Visible = false;
-                    chkUnpaid.Enabled = true;
-                    chkUnpaid.Visible = true;
+                    if (admin >= 1)
+                    {
+                        chkUnpaid.Enabled = true;
+                        chkUnpaid.Visible = true; 
+                        btnUnrecord.Enabled = true;
+                        btnUnrecord.Visible = true;
+                    }
                 }
                 else
                 {
@@ -423,28 +562,182 @@ namespace CRUD_GROUP
                 dgvRecords.Visible = true;
                 FieldsPanel.Enabled = false;
                 FieldsPanel.Visible = false;
-                chkUnpaid.Enabled = true;
-                chkUnpaid.Visible = true;
+                if (admin >= 1)
+                {
+                    chkUnpaid.Enabled = true;
+                    chkUnpaid.Visible = true;
+                    btnUnrecord.Enabled = true;
+                    btnUnrecord.Visible = true;
+                }
             }
         }
-        bool isAdding = false;
+        #endregion
+
+        // This event happens when the user clicks the Add/Edit page.
+        #region Access add/edit page
         private void AddButton_Click(object sender, EventArgs e)
         {
             if (isAdding) return;
             else
             {
                 ClearData();
+
+                string name;
+                bool toggled = false;
+                if (admin > 0)
+                {
+                    ToggleDark(true);
+                    toggled = true;
+                    name = RequestName.Execute(db, account.Key);
+                } else
+                {
+                    name = GetName();
+                }
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    if (toggled) { ToggleDark(false); toggled = false; }
+                    return;
+                }
+                DataTable re = db.ExecuteQuery("SELECT Username FROM AccountTBL");
+                bool tr = false;
+                foreach (DataRow dr in re.Rows)
+                {
+                    if (dr["Username"].ToString() == name)
+                    {
+                        tr = true;
+                        break;
+                    }
+                }
+                if (!tr)
+                {   
+                    DialogResult f = MessageBox.Show($"There is no account associated with username \"{name}\".\nCreate account now?", "No associated account", MessageBoxButtons.YesNo, MessageBoxIcon.Hand);
+                    if (f == DialogResult.Yes)
+                    {
+                        DataFormat r = new DataFormat(name, 0, 0, 0, "");
+                        NewAccountWithDataUser g = new NewAccountWithDataUser(db, r);
+                        if (g.ShowDialog() != DialogResult.OK) { if (toggled) { ToggleDark(false); toggled = false; } return; }
+                        if (toggled) { ToggleDark(false); toggled = false; }
+                    } else
+                    {
+                        if (toggled) { ToggleDark(false); toggled = false; }
+                        return;
+                    }
+                }
+                if (toggled) { ToggleDark(false); toggled = false; }
+                int idx = -1;
+                DataTable ee = db.ExecuteQuery($"SELECT ID FROM RecordTable WHERE CustomerName = '{name}' ORDER BY ID ASC");
+                for (int i = 0; i < ee.Rows.Count; i++)
+                {
+                    idx = int.Parse(ee.Rows[i]["ID"].ToString());
+                }
+                string gtx;
+                if (idx != -1)
+                {
+                    DataTable rtx = db.ExecuteQuery($"SELECT CurrentKWH FROM RecordTable WHERE ID = {idx}");
+                    gtx = rtx.Rows[0]["CurrentKWH"].ToString();
+                } else
+                {
+                    gtx = "0";
+                }
                 isAdding = true;
                 AddButton.Enabled = false;
                 AddButton.Visible = false;
                 dgvRecords.Visible = false;
                 FieldsPanel.Enabled = true;
                 FieldsPanel.Visible = true;
-                chkUnpaid.Enabled = false;
-                chkUnpaid.Visible = false;
+                txtPrev.Text = gtx;
+                txtPrev.Enabled = false;
+                txtName.Text = name;
+                txtName.Enabled = false;
+                if (admin >= 1)
+                {
+                    chkUnpaid.Enabled = false;
+                    chkUnpaid.Visible = false;
+                    btnUnrecord.Enabled = false;
+                    btnUnrecord.Visible = false;
+                }
             }
         }
+        #endregion
 
+        // This displays the unclaimed data. Only for secretary and sysadmins!
+        #region Display unrecorded data
+        private void btnUnrecord_Click(object sender, EventArgs e)
+        {
+            DisplayUnrecord dg = new DisplayUnrecord(db);
+            ToggleDark(true);
+            dg.ShowDialog(this);
+            ToggleDark(false);
+            dg.Dispose();
+
+        }
+        #endregion
+
+        // This is the Add new row for users (based on the ReferenceID)
+        #region Add new row as a user by ReferenceID
+        private void AddButtonUsr_Click(object sender, EventArgs e)
+        {
+            if (!ValidateInput(false, true)) return;
+            else
+            {
+                string currentName = GetName();
+                string fid = txtReceipt.Text; // Previously this is for the receipt, but this now refers to the Reference ID in the receipt
+                DataTable raw = db.ExecuteQuery($"SELECT * FROM UnrecordTable WHERE ReferenceID = '{fid}' AND CustomerName = '{currentName}'");
+                if (raw.Rows.Count != 1)
+                {
+                    MessageBox.Show("The reference ID is invalid.","Invalid",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    return;
+                } else
+                {
+                    string x = (admin != 0) ? txtName.Text : account.Key;
+                    decimal prevKWH = decimal.Parse(raw.Rows[0]["PreviousKWH"].ToString());
+                    decimal nextKWH = decimal.Parse(raw.Rows[0]["CurrentKWH"].ToString());
+                    decimal rate = decimal.Parse(raw.Rows[0]["RatePerKWH"].ToString());
+                    decimal price = (nextKWH - prevKWH) * rate;
+                    int idx = GetLastIndex();
+                    string dt = DateTime.Now.ToString("yyyy-MM-dd");
+                    int id = GetLastID();
+                    string input = $"INSERT INTO RecordTable VALUES ({id}, '{x}',{prevKWH},{nextKWH},{rate},{price},'{fid}',0,{idx},'{dt}')";
+                    try
+                    {
+                        int rows = db.ExecuteNonQuery(input);
+                        if (rows > 0)
+                        {
+                            ClearData();
+                            db.ExecuteNonQuery($"DELETE FROM UnrecordTable WHERE ID = {raw.Rows[0]["ID"]}");
+                            DisplayData();
+                            MessageBox.Show("Record has been saved.", $"Affected rows: {rows}",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+
+                            isAdding = false;
+                            AddButton.Enabled = true;
+                            AddButton.Visible = true;
+                            dgvRecords.Visible = true;
+                            FieldsPanel.Enabled = false;
+                            FieldsPanel.Visible = false;
+                            if (admin >= 1)
+                            {
+                                chkUnpaid.Enabled = true;
+                                btnUnrecord.Enabled = true;
+                                btnUnrecord.Visible = true;
+                                chkUnpaid.Visible = true;
+                            }
+                        } else
+                        {
+                            MessageBox.Show("An error has been occurred.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    } catch (Exception ex)
+                    {
+                        MessageBox.Show($"An error has been occurred.\n\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+        #endregion
+
+        // Exit out of the Input screen when searching
+        #region Access list of records when user clicks the Search button
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (isAdding)
@@ -455,12 +748,20 @@ namespace CRUD_GROUP
                 dgvRecords.Visible = true;
                 FieldsPanel.Enabled = false;
                 FieldsPanel.Visible = false;
-                chkUnpaid.Enabled = true;
-                chkUnpaid.Visible = true;
+                if (admin >= 1)
+                {
+                    chkUnpaid.Enabled = true;
+                    chkUnpaid.Visible = true;
+                    btnUnrecord.Enabled = true;
+                    btnUnrecord.Visible = true;
+                }
             }
             DisplayData();
         }
+        #endregion
 
+        // Cancel button (users actually use the Update button as the cancel button and named "Cancel")
+        #region Cancel button in add/edit page
         private void CancelAddButton_Click(object sender, EventArgs e)
         {
             isAdding = false;
@@ -469,13 +770,21 @@ namespace CRUD_GROUP
             dgvRecords.Visible = true;
             FieldsPanel.Enabled = false;
             FieldsPanel.Visible = false;
-            chkUnpaid.Enabled = true;
-            chkUnpaid.Visible = true;
+            if (admin >= 1)
+            {
+                chkUnpaid.Enabled = true;
+                chkUnpaid.Visible = true;
+                btnUnrecord.Enabled = true;
+                btnUnrecord.Visible = true;
+            }
         }
+        #endregion
 
+        // Delete a row based on the ID.
+        #region Delete a row
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (admin)
+            if (admin == 1)
             {
                 if (!ValidateInput(true, false)) return;
                 int f = int.Parse(txtID.Text);
@@ -490,6 +799,19 @@ namespace CRUD_GROUP
                         if (s > 0)
                         {
                             MessageBox.Show("Item deleted", $"Affected rows: {s}", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            isAdding = false;
+                            AddButton.Enabled = true;
+                            AddButton.Visible = true;
+                            dgvRecords.Visible = true;
+                            FieldsPanel.Enabled = false;
+                            FieldsPanel.Visible = false;
+                            if (admin >= 1)
+                            {
+                                chkUnpaid.Enabled = true;
+                                chkUnpaid.Visible = true;
+                                btnUnrecord.Enabled = true;
+                                btnUnrecord.Visible = true;
+                            }
                             DisplayData();
                         }
                         else
@@ -508,25 +830,36 @@ namespace CRUD_GROUP
                     "\n\nTry logging in as administrator and try again.","Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
+        #endregion
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        // Disable the checkbox for Paid if not recorded
+        #region Disable paid checkbox when unrecord is checked
+        private void UnrecordCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (UnrecordCheckBox.Checked)
+            {
+                PaidCheckBox.Checked = false;
+                PaidCheckBox.Enabled = false;
+            } else
+            {
+                PaidCheckBox.Enabled = true;
+            }
         }
+        #endregion
 
-        private void SearchComboBox_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        // This occurs when a checkbox for displaying the unpaid records is changed.
+        #region Update list of records to display unpaid data
         private void chkUnpaid_CheckedChanged(object sender, EventArgs e)
         {
             DisplayData();
         }
+        #endregion
 
+        // This occurs when sysadmins click File > Account > Create account
+        #region Create new account
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (admin) {
+            if (admin == 1) {
                 NewAccount t = new NewAccount(db);
                 Hide();
                 DialogResult f = t.ShowDialog();
@@ -535,12 +868,16 @@ namespace CRUD_GROUP
                 {
                     FillSearch();
                 }
+                t.Dispose();
             }
         }
+        #endregion
 
+        // This occurs when users click Graph > Save as... or click Save as PNG... in Graph view
+        #region Create an image of graph and save as PNG, JPEG, etc.
         private void button4_Click(object sender, EventArgs e)
         {
-            Image f = null;
+            Image f;
             switch (GraphTabControl.SelectedIndex)
             {
                 case 0:
@@ -564,7 +901,7 @@ namespace CRUD_GROUP
             SaveFileDialog t = new SaveFileDialog()
             {
                 Title = "Save graph image as:",
-                Filter = "Portable Network Graphics (.png)|*.png|JPEG Image (.jpg, .jpeg, .jpe, .jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|Bitmap image (.bmp)|*.bmp|All files|*.*",
+                Filter = "Portable Network Graphics|*.png|JPEG Image|*.jpg;*.jpeg;*.jpe;*.jfif|Bitmap image|*.bmp|All files|*.*",
             };
             if (t.ShowDialog() == DialogResult.OK)
             {
@@ -608,10 +945,13 @@ namespace CRUD_GROUP
                     "- WMF (.wmf)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        #endregion
 
+        // This calls the Print Worker when printing a report
+        #region Report printing
         private void PrintButton_Click(object sender, EventArgs e)
         {
-            if (!admin)
+            if (admin == 0)
             {
                 p.DrawLineExt(picGraph, 1, Color.Blue, new Point(1920, 1080), 1, 250, false, null, false, true);
                 p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(1920, 1080), 1, 1, false, null, false, true);
@@ -620,137 +960,72 @@ namespace CRUD_GROUP
                 p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
                 p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraphPricePerKwh.Width, picGraphPricePerKwh.Height), 1, 1);
                 string uname = GetName();
-                string dname = "";
                 DataTable users = db.ExecuteQuery($"SELECT FullName FROM AccountTBL WHERE Username='{uname}'");
-                dname = users.Rows[0]["FullName"].ToString() ?? "Unknown Name";
                 DataTable tbl = db.ExecuteQuery($"SELECT PreviousKWH, CurrentKWH, RatePerKWH, Price, ReceiptNo, DateCreated FROM RecordTable WHERE CustomerName='{uname}' ORDER BY RecordTimeIndex ASC");
+                string dname = users.Rows[0]["FullName"].ToString() ?? "Unknown Name";
                 PrintWorker d = new PrintWorker(rt, pt, tbl, dname);
                 d.Print();
             }
         }
+        #endregion
 
+        // This redraws the graph when users click Graph > Refresh.
+        #region Refresh graph data (if not already refreshed)
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Draw();
         }
+        #endregion
+
+        // This redraws the graph when specific Windows messages are called. This does not need to be called manually.
+        #region Refresh graph image when manipulating with windows
         /// <summary>
         /// This is for making changes to the size of the graph when performing window commands to prevent distortions.
         /// </summary>
         /// <param name="m">A message pointer that Windows executes. This contains commands for window resize, move, maximize, minimize, restore, and Alt key press.</param>
         protected override void WndProc(ref Message m)
         {
-            base.WndProc(ref m);
-            if (m.Msg == 0x0112) // WM_SYSCOMMAND
+            base.WndProc(ref m); // Perform Windows command first
+            if (m.Msg == 0x0112) // 0x0112 tells us that Windows is trying to move the window
             {
-                int wparam = m.WParam.ToInt32() & 0xfff0;
-
+                int wparam = m.WParam.ToInt32() & 0xfff0; // Convert a Windows message parameter into what we can read
                 switch (wparam)
                 {
                     case 0xF030: // Maximize
-                        Console.WriteLine("[GUI] Window maximized");
-                        //Program.d.DrawLine(f, new Point(f.Width, f.Height));
-                        if (!admin) 
+                        if (admin == 0) 
                         {
                             p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
                             p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraphPricePerKwh.Width, picGraphPricePerKwh.Height), 1, 1);
                         }
-                        
                         break;
                     case 0xF120: // Restore
-                        Console.WriteLine("[GUI] Window restored");
-                        //Program.d.DrawLine(f, new Point(f.Width, f.Height));
-                        if (!admin)
+                        if (admin == 0)
                         {
                             p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
                             p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraphPricePerKwh.Width, picGraphPricePerKwh.Height), 1, 1);
                         }
                         break;
                     case 0xF010: // Drag
-                        Console.WriteLine("[GUI] Window dragged");
-                        //Program.d.DrawLine(f, new Point(f.Width, f.Height));
-                        if (!admin)
+                        if (admin == 0)
                         {
                             p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
                             p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraphPricePerKwh.Width, picGraphPricePerKwh.Height), 1, 1);
                         }
-                        break;
-                    case 0xF060: // Close
-                        Console.WriteLine("[GUI] Window closed");
-                        break;
-                    case 0xF020: // Minimize
-                        Console.WriteLine("[GUI] Window minimized");
                         break;
                     case 0xF000: // Resize
-                        Console.WriteLine("[GUI] Window resized");
-                        //Program.d.DrawLine(f, new Point(f.Width, f.Height));
-                        if (!admin)
+                        if (admin == 0)
                         {
                             p.DrawLineExt(picGraph, 1, Color.Blue, new Point(picGraph.Width, picGraph.Height), 1, 250);
                             p.DrawLineExt(picGraphPricePerKwh, 0, Color.Red, new Point(picGraphPricePerKwh.Width, picGraphPricePerKwh.Height), 1, 1);
                         }
                         break;
-                    case 0xF100: // Alt key
-                        Console.WriteLine("[GUI] Alt key pressed");
-                        break;
-                    case 0xF170: // Sleep mode detected
-                        Console.WriteLine("[GUI] System went to sleep mode");
-                        break;
-                    default:     // Seeker
-                        Console.WriteLine($"[GUI] 0x{wparam:X4} is unknown!");
-                        MessageBox.Show($"Sorry, a seeker has been detected.\n\n{wparam:X4} is not a valid WM_COMMAND message.\n\nCheck the code for errors!", "Guru meditation", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
                 }
             }
-            else if (m.Msg == 0x0219)
-            {
-                switch ((int)m.WParam)
-                {
-                    case 0x8004:
-                        // Device removed
-                        Console.WriteLine("[GUI] A device has been disconnected.");
-                        int devType = Marshal.ReadInt32(m.LParam, 4);
-                        if (devType == 0x00000002) // DBT_DEVTYP_VOLUME
-                        {
-                            // Refresh volume list
-                            Console.WriteLine("[SYSTEM] Storage lost connection, refreshing disk list...");
-                            //RefreshDisk(true);
-                        }
-                        break;
-                    case 0x8000:
-                        // Device inserted
-                        Console.WriteLine("[GUI] A device has been connected.");
-                        DEV_BROADCAST_VOLUME vol = Marshal.PtrToStructure<DEV_BROADCAST_VOLUME>(m.LParam);
-                        if (vol.dbcv_devicetype == 0x00000002)
-                        {
-                            // vol.dbcv_unitmask for drive letter
-                            //string driveLetter = DriveMaskToLetter(vol.dbcv_unitmask);
-                            //MessageBox.Show($"Drive {driveLetter} has been inserted.");
-                            Console.WriteLine("[SYSTEM] Storage connection detected. Refreshing disk list...");
-                            //RefreshDisk(false);
-                        }
-                        break;
-                }
-            }
-            //Console.WriteLine($"[SYSTEM] Performing Win32 message {m.WParam}...");
         }
-        public struct DEV_BROADCAST_VOLUME
-        {
-            public int dbcv_size;
-            public int dbcv_devicetype;
-            public int dbcv_reserved;
-            public int dbcv_unitmask;
-        }
+        #endregion
 
-        private void picGraph_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void picGraphPricePerKwh_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        // This displays the details when users click parts of the graph
+        #region Display details when a user click on points on a graph
         private void ClickedImage(int index, Point point, bool dc)
         {
             string name = GetName();
@@ -794,7 +1069,7 @@ namespace CRUD_GROUP
             }
 
         }
-
+        // These are called when a user click in a graph PictureBox
         private void picGraph_MouseClick(object sender, MouseEventArgs e)
         {
             Point fclick = e.Location;
@@ -807,25 +1082,18 @@ namespace CRUD_GROUP
             ClickedImage(1, fclick, true);
 
         }
+        #endregion
 
-        private void picGraphPricePerKwh_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            Point fclick = e.Location;
-            ClickedImage(0, fclick, true);
-
-        }
-
-        private void picGraph_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            Point fclick = e.Location; 
-            ClickedImage(1, fclick, true);
-
-        }
-
+        // This is if users clicks Graph > Save as... menu
+        #region Redirect the Save as button to the main save method
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             button4_Click(sender, e);
         }
+        #endregion
+
+        // This is called when we saved a graph into an image or record as a simple CSV spreadsheet file.
+        #region Open directory
         private void Open(string path)
         {
             Process t = new Process()
@@ -839,6 +1107,10 @@ namespace CRUD_GROUP
             };
             t.Start();
         }
+        #endregion
+
+        // This creates a CSV spreadsheet file. This is mainly used to convert it into Excel or other spreadsheet formats.
+        #region Create a CSV (comma-separated values) spreadsheet/list file
         private void SaveCSVRecord_Click(object sender, EventArgs e)
         {
             SaveFileDialog s = new SaveFileDialog()
@@ -867,28 +1139,40 @@ namespace CRUD_GROUP
                 Open(s.FileName);
             }
         }
-        bool ft = false;
+        #endregion
+
+        // This closes the window without kicking us back to the login screen.
+        #region Close window when clicking on X or clicking "Exit" button
         private void exitAltF4ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
+        #endregion
 
+        // This checks if the window is closed with Account > Log out
+        #region Set DialogResult when closing depending on the exit variable
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!ft) DialogResult = DialogResult.Cancel;
         }
+        #endregion
 
-        private void accountInformationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        // Exit to login page if we confirm to log out
+        #region Exit to login page
         private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ft = true;
-            DialogResult = DialogResult.OK;
-            Close();
+            ToggleDark(true);
+            if (MessageBox.Show("Do you want to log out?", "Log out", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                ft = true;
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            ToggleDark(false);
         }
+
+        #endregion
+
     }
 }

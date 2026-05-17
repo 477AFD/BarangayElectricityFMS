@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -13,26 +14,13 @@ namespace CRUD_GROUP
 {
     public partial class Login : Form
     {
+        #region Constructor
         public Login()
         {
             InitializeComponent();
         }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void Login_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
-        }
-
+        #endregion
+        #region Sign in to the system
         private void button3_Click(object sender, EventArgs e)
         {
             try
@@ -66,37 +54,25 @@ namespace CRUD_GROUP
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Seeker Detected:\n{ex}", "Guru meditation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Seeker detected:\n{ex}", "Guru meditation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Debug.WriteLine(ex);
                 Close();
             }
         }
-
-        private void pictureBox3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel4_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        #endregion
+        #region Switch to Sign-up form
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Hide();
             Program.fSignUpForm.Show();
         }
-
+        #endregion
+        #region Show password
         private void linkLabel6_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             txtPassword.UseSystemPasswordChar = !txtPassword.UseSystemPasswordChar;
         }
-
+        #endregion
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
         {
             //Program.fSignUpForm.Close();
